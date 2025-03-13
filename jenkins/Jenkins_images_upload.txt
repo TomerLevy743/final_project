@@ -1,0 +1,20 @@
+jenkins pipeline - images upload
+
+build:
+
+docker compose build 
+
+tag status-page:latest 
+tag nginx:latest
+
+
+push:
+login to ecr
+push images to ecr
+
+test:
+pull images
+
+
+cleanup:
+delete docker compose images
