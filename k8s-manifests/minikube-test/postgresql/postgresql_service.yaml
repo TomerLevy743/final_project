@@ -11,4 +11,3 @@ spec:
       port: 5432
       targetPort: 5432
       name: sql
-# TODO - Change in docker-compose and configuation.py the sql host to postgresql
