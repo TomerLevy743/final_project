@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: status-page
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: status-page
+  template:
+    metadata:
+      labels:
+        app: status-page
+    spec:
+      containers:
+        - name: status-page
+          image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/tomer-guy-final-project/app:latest
+          env:
+            - name: DATABASE_NAME
+              value: "db_statuspage"
+            - name: DATABASE_USER
+              value: "admin_statuspage"
+            - name: DATABASE_PASSWORD
+              value: "0123456789"
+            - name: DATABASE_HOST
+              value: "postgresql"
+            - name: REDIS_HOST
+              value: "redis"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: SECRET_KEY
+              value: "O32MGYzFbXL4EqKgVpwrDT)8s5L05A-z%Rcfr67Blzp@g7!d0@"
+            - name: DJANGO_SETTINGS_MODULE
+              value: "statuspage.settings"
+            - name: DJANGO_SUPERUSER_USERNAME
+              value: "admin-status"
+            - name: DJANGO_SUPERUSER_PASSWORD
+              value: "admin-status"
+          ports:
+            - containerPort: 8000
+            - containerPort: 8001
