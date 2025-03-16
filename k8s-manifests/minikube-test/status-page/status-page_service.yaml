@@ -7,8 +7,10 @@ spec:
     app: status-page
   ports:
     - protocol: TCP
+      name: http
       port: 8000
       targetPort: 8000
     - protocol: TCP
+      name: status-page
       port: 8001
       targetPort: 8001

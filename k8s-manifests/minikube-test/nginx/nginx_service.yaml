@@ -10,8 +10,10 @@ spec:
       port: 80
       targetPort: 80
       nodePort: 30080
+      name: http
     - protocol: TCP
       port: 443
       targetPort: 443
+      name: https
       nodePort: 30443
   type: NodePort # subjet to change to LoadBalancer

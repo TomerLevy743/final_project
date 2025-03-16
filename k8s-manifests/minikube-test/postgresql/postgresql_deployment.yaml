@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgresql
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -12,25 +13,11 @@ spec:
       labels:
         app: postgresql
     spec:
-      initContainers:
-        - name: init-db
-          image: postgres:latest
-          command:
-            [
-              "sh",
-              "-c",
-              "psql -h postgresql -U admin_statuspage -d db_statuspage -f /init_db.sh",
-            ]
-          env:
-            - name: PGPASSWORD
-              value: "0123456789"
-          volumeMounts:
-            - name: init-db-config
-              mountPath: /init_db.sh
-              subPath: init_db.sh
+      imagePullSecrets:
+        - name: ecr-secret
       containers:
         - name: postgresql
-          image: postgres:latest
+          image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/tomer-guy-final-project/sql:latest
           env:
             - name: POSTGRES_USER
               value: "admin_statuspage"
