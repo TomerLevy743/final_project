@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: postgresql
+  name: sql
   namespace: default
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgresql
+      app: sql
   template:
     metadata:
       labels:
-        app: postgresql
+        app: sql
     spec:
       imagePullSecrets:
         - name: ecr-secret
       containers:
-        - name: postgresql
+        - name: sql
           image: 992382545251.dkr.ecr.us-east-1.amazonaws.com/tomer-guy-final-project/sql:latest
           env:
             - name: POSTGRES_USER
