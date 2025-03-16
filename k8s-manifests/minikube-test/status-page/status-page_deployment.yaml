@@ -29,7 +29,6 @@ spec:
             - name: REDIS_HOST
               value: "redis"
             - name: REDIS_PORT
-
               value: "6379"
             - name: SECRET_KEY
               value: "O32MGYzFbXL4EqKgVpwrDT)8s5L05A-z%Rcfr67Blzp@g7!d0@"
