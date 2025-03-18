@@ -1,0 +1,18 @@
+vpc
+subnets 2 public and 3 private
+internet gateway
+NAT gateway
+security groups:
+    - connect to the front end
+    - connect backend to frontend
+    - connect backend to db
+
+
+
+eks 
+RDS ?
+ingress
+load balancer ?
+
+
+
