@@ -9,10 +9,6 @@ variable "owner" {
   default     = "tomerlevy"
 }
 
-variable "private_subnet_cidr" {
-  description = "private subnet cidr"
-  type        = list(string)
-}
 variable "from_port" {
   description = "from port"
   type        = list(number)
