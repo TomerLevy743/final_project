@@ -6,8 +6,14 @@ resource "aws_security_group" "elb_sg" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port   = [80, 443]
-    to_port     = [443]
+    from_port   = 80
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 443
+    to_port     = 443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
@@ -31,13 +37,13 @@ resource "aws_security_group" "frontend-sg" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port       = 443
-    to_port         = 443
-    protocol        = "tcp"
-    security_groups = [aws_security_group.elb_sg.id]
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    # security_groups = [aws_security_group.elb_sg.id]
   }
 
-  # allowing ssh access only from host machine by fetching their public ip
 
   egress {
     from_port   = 0
@@ -83,8 +89,14 @@ resource "aws_security_group" "database-sg" {
   vpc_id      = var.vpc_id
 
   ingress {
-    from_port       = [5432, 6379]
-    to_port         = [5432, 6379]
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.backend-sg.id]
+  }
+  ingress {
+    from_port       = 6379
+    to_port         = 6379
     protocol        = "tcp"
     security_groups = [aws_security_group.backend-sg.id]
   }

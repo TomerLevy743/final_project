@@ -1,6 +1,6 @@
 output "lb-sg" {
   description = "The ID of the load balancer group"
-  value       = aws_security_group.elb-sg.id
+  value       = aws_security_group.elb_sg.id
 }
 output "frontend-sg" {
   description = "The ID of the frontend group"
