@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: status-page
+spec:
+  replicas: {{ .Values.status_page.replicas }}
+  selector:
+    matchLabels:
+      app: status-page
+  template:
+    metadata:
+      labels:
+        app: status-page
+    spec:
+      imagePullSecrets:
+        - name: ecr-secret
+      containers:
+        - name: status-page
+          image: "{{ .Values.status_page.image.repository }}:{{ .Values.status_page.image.tag }}"
+          env:
+            - name: DATABASE_NAME
+              value: "{{ .Values.postgresql.database }}"
+            - name: DATABASE_USER
+              value: "{{ .Values.postgresql.username }}"
+            - name: DATABASE_PASSWORD
+              value: "{{ .Values.postgresql.password }}"
+            - name: DATABASE_HOST
+              value: "{{ .Values.status_page.dbhost }}"
+            - name: REDIS_HOST
+              value: "{{ .Values.status_page.redishost }}"
+            - name: REDIS_PORT
+              value: "6379"
+            - name: SECRET_KEY
+              value: "{{ .Values.status_page.secret_key }}"
+            - name: DJANGO_SETTINGS_MODULE
+              value: "statuspage.settings"
+            - name: DJANGO_SUPERUSER_USERNAME
+              value: "{{ .Values.status_page.django_superuser_username }}"
+            - name: DJANGO_SUPERUSER_PASSWORD
+              value: "{{ .Values.status_page.django_superuser_password }}"
+            - name: DJANGO_SUPERUSER_EMAIL
+              value: "{{ .Values.status_page.django_superuser_email }}"
+          ports:
+            - containerPort: 8000
+            - containerPort: 8001

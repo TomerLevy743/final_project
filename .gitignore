@@ -3,6 +3,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+
+create_ecr_secret.sh
+
+
 # C extensions
 *.so
 
