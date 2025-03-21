@@ -15,3 +15,9 @@ output "database-sg" {
   description = "The ID of the database group"
   value       = aws_security_group.database-sg.id
 }
+
+# output "eks_security_group_id" {
+#   description = "The ID of the eks security group"
+#   # database-sg = 0, backend-sg = 1, frontend-sg = 2, lb-sg = 3
+#   value = [database-sg, backend-sg, frontend-sg, lb-sg]
+# }
