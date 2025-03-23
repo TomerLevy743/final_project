@@ -32,5 +32,5 @@ redis:
     tag: 4.0-alpine
 
 storageClass:
-  name: guy_tomer_storage_class
+  name: guy-tomer-storage-class
   type: gp2

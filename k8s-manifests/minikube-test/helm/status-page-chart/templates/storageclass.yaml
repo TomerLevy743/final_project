@@ -1,7 +1,7 @@
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
-  name: {{ .Values.storageClass.name | default "guy_tomer_storage_class" }}
+  name: {{ .Values.storageClass.name | default "guy-tomer-storage-class" }}
 provisioner: ebs.csi.aws.com
 parameters:
   type: {{ .Values.storageClass.type | default "gp2" }}
