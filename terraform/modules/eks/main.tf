@@ -8,8 +8,8 @@ resource "aws_eks_cluster" "this" {
   }
 
   tags = {
-    Owner = "tomerlevy",
-    # Owner = "guytamari"
+    # Owner = "tomerlevy",
+    Owner = "guytamari"
   }
 
   depends_on = [
