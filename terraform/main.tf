@@ -26,7 +26,7 @@ module "eks" {
 
 }
 
-module "ingress" {
-  source       = "./modules/ingress"
-  cluster_name = module.eks.cluster_name
-}
+# module "ingress" {
+#   source       = "./modules/ingress"
+#   cluster_name = module.eks.cluster_name
+# }

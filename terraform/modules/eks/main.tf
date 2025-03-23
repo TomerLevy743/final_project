@@ -8,8 +8,8 @@ resource "aws_eks_cluster" "this" {
   }
 
   tags = {
-    # Owner = "tomerlevy",
-    Owner = "guytamari"
+    Owner = "tomerlevy",
+    # Owner = "guytamari"
   }
 
   depends_on = [
@@ -90,4 +90,55 @@ resource "aws_eks_node_group" "eks_nodes" {
     aws_iam_role_policy_attachment.eks_worker_node_policy,
     aws_eks_cluster.this
   ]
+}
+
+
+resource "aws_iam_role" "eks_user_role" {
+  name = "eks-user-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::992382545251:user/guytamari" # ARN of the first user
+        }
+        Action = "sts:AssumeRole"
+      },
+      {
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::992382545251:user/tomerlevy" # ARN of the second user
+        }
+        Action = "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "eks_user_role_policy" {
+  role       = aws_iam_role.eks_user_role.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
+}
+
+resource "kubernetes_config_map" "aws_auth" {
+  metadata {
+    name      = "aws-auth"
+    namespace = "kube-system"
+  }
+
+  data = {
+    mapRoles = <<-EOT
+      - rolearn: arn:aws:iam::992382545251:role/guytamari-role
+        username: guytamari
+        groups:
+          - system:masters  # Granting admin access, modify as needed
+      - rolearn: arn:aws:iam::992382545251:role/tomerlevy-role
+        username: tomerlevy
+        groups:
+          - system:masters  # Granting admin access, modify as needed
+    EOT
+  }
+
 }
