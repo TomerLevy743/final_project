@@ -19,11 +19,11 @@ spec:
           image: "{{ .Values.status_page.image.repository }}:{{ .Values.status_page.image.tag }}"
           env:
             - name: DATABASE_NAME
-              value: "{{ .Values.postgresql.database }}"
+              value: "{{ .Values.status_page.dbname }}"
             - name: DATABASE_USER
-              value: "{{ .Values.postgresql.username }}"
+              value: "{{ .Values.status_page.dbuser }}"
             - name: DATABASE_PASSWORD
-              value: "{{ .Values.postgresql.password }}"
+              value: "{{ .Values.status_page.dbpassword }}"
             - name: DATABASE_HOST
               value: "{{ .Values.status_page.dbhost }}"
             - name: REDIS_HOST
