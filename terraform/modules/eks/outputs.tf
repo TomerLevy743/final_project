@@ -17,3 +17,8 @@ output "cluster_token" {
 output "cluster_certificate_authority_data" {
   value = aws_eks_cluster.this.certificate_authority[0].data
 }
+
+
+output "eks_oidc_issuer_url" {
+  value = aws_eks_cluster.this.identity[0].oidc[0].issuer
+}

@@ -122,6 +122,28 @@ resource "aws_iam_role_policy_attachment" "eks_user_role_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
 }
 
+#resource "kubernetes_config_map" "aws_auth" {
+  #metadata {
+    #name      = "aws-auth"
+    #namespace = "kube-system"
+  #}
+
+  #data = {
+    #mapRoles = <<-EOT
+      #- rolearn: arn:aws:iam::992382545251:role/guytamari-role
+        #username: guytamari
+        #groups:
+          #- system:masters  # Granting admin access, modify as needed
+      #- rolearn: arn:aws:iam::992382545251:role/tomerlevy-role
+        #username: tomerlevy
+        #groups:
+          #- system:masters  # Granting admin access, modify as needed
+    #EOT
+  #}
+
+#}
+
+
 resource "kubernetes_config_map" "aws_auth" {
   metadata {
     name      = "aws-auth"
@@ -130,15 +152,19 @@ resource "kubernetes_config_map" "aws_auth" {
 
   data = {
     mapRoles = <<-EOT
+      - rolearn: arn:aws:iam::992382545251:role/tomer-guy-eks-node-group-role
+        username: tomer-guy-node
+        groups:
+          - system:bootstrappers
+          - system:nodes
       - rolearn: arn:aws:iam::992382545251:role/guytamari-role
         username: guytamari
         groups:
-          - system:masters  # Granting admin access, modify as needed
+          - system:masters
       - rolearn: arn:aws:iam::992382545251:role/tomerlevy-role
         username: tomerlevy
         groups:
-          - system:masters  # Granting admin access, modify as needed
+          - system:masters
     EOT
   }
-
 }

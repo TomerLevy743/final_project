@@ -26,13 +26,18 @@ module "eks" {
 
 }
 
+output "eks_oidc_issuer_url" {
+  value = module.eks.eks_oidc_issuer_url
+}
+
 module "rds" {
-  source = "./modules/rds"
+  source      = "./modules/rds"
   subnet_ids  = module.vpc.private_subnet_id
   database-sg = module.security_groups.database-sg
 }
 
-# module "ingress" {
-#   source       = "./modules/ingress"
-#   cluster_name = module.eks.cluster_name
-# }
+#module "ingress" {
+#source       = "./modules/ingress3"
+#vpc_id       = module.vpc.vpc_id
+#cluster_name = "tomer-guy-statuspage-cluster"
+#}

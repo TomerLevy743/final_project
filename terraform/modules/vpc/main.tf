@@ -18,6 +18,7 @@ resource "aws_subnet" "public_subnets" {
   tags = {
     Name  = "public-subnet-${count.index}"
     Owner = var.owner
+    "kubernetes.io/role/elb" = "1"
   }
 }
 # creation private subnet in  az1
@@ -29,6 +30,7 @@ resource "aws_subnet" "private" {
   tags = {
     Name  = "private-subnet-${count.index}"
     Owner = var.owner
+    "kubernetes.io/role/internal-elb" = "1"
   }
 
 }
@@ -100,3 +102,4 @@ resource "aws_route_table_association" "private" {
   route_table_id = aws_route_table.private[count.index].id
   subnet_id      = aws_subnet.private[count.index].id
 }
+

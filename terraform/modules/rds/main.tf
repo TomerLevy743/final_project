@@ -12,9 +12,15 @@ resource "aws_db_instance" "statuspage_db" {
   skip_final_snapshot  = true
   vpc_security_group_ids = [var.database-sg]
   db_subnet_group_name   = aws_db_subnet_group.statuspage_subnet_group.name
+  tags = {
+    Owner = "guytamari"
+  }
 }
 
 resource "aws_db_subnet_group" "statuspage_subnet_group" {
   name       = "statuspage-subnet-group"
   subnet_ids = var.subnet_ids 
+  tags = {
+    Owner = "guytamari"
+  }
 }
