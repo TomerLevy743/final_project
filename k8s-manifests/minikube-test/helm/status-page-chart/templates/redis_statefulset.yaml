@@ -25,7 +25,7 @@ spec:
         name: redis-data
       spec:
         accessModes: ["ReadWriteOnce"]
-        storageClassName: guy_tomer_storage_class
+        storageClassName: "{{ .Values.storageClass.name }}"
         resources:
           requests:
             storage: 500Mi
