@@ -16,3 +16,15 @@ variable "db_name" {
   type        = string
   default     = "db_statuspage"
 }
+
+
+variable "subnet_ids" {
+  description = "List of subnet IDs for the RDS subnet group"
+  type        = list(string)
+}
+
+
+variable "database-sg" {
+  description = "database sg"
+  type        = string
+}

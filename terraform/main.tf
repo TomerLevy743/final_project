@@ -26,6 +26,12 @@ module "eks" {
 
 }
 
+module "rds" {
+  source = "./modules/rds"
+  subnet_ids  = module.vpc.private_subnet_id
+  database-sg = module.security_groups.database-sg
+}
+
 # module "ingress" {
 #   source       = "./modules/ingress"
 #   cluster_name = module.eks.cluster_name
