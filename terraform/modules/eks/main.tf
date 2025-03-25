@@ -84,6 +84,10 @@ resource "aws_eks_node_group" "eks_nodes" {
   remote_access {
     ec2_ssh_key = "GuyTamari-KeyPair" # Optional, for SSH access
   }
+  tags = {
+    Name = "tomer-guy-eks-node"
+    Owner = var.owner
+  }
 
   depends_on = [
     aws_iam_role_policy_attachment.eks_worker_node_policy,

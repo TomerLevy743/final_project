@@ -38,18 +38,18 @@ module "rds" {
   owner       = var.owner
 }
 
-module "ebs" {
-  source      = "./modules/ebs"
-  region      = var.region
-  clusterName = module.eks.cluster_name
-  oidc_arn    = data.aws_iam_openid_connect_provider.eks.arn
-  oidc_id     = data.aws_iam_openid_connect_provider.eks.id
-  depends_on  = [module.eks]
-}
+#module "ebs" {
+#source      = "./modules/ebs"
+#region      = var.region
+#clusterName = module.eks.cluster_name
+#oidc_arn    = data.aws_iam_openid_connect_provider.eks.arn
+#oidc_id     = data.aws_iam_openid_connect_provider.eks.id
+#depends_on  = [module.eks]
+#}
 
 
 module "status-page" {
   source       = "./modules/status-page-helm"
   rds_endpoint = module.rds.rds_endpoint
-  depends_on   = [module.ebs]
+  depends_on   = [aws_eks_addon.csi_driver]
 }

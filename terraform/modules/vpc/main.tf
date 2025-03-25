@@ -42,6 +42,7 @@ resource "aws_internet_gateway" "main" {
     Name  = "mainGW"
     Owner = var.owner
   }
+  
 }
 # elastic ip for the nat in each az
 resource "aws_eip" "nat_azs" {
@@ -57,6 +58,7 @@ resource "aws_nat_gateway" "nat_azs" {
     Name  = "nat-gateway-${count.index}"
     Owner = var.owner
   }
+  depends_on = [aws_eip.nat_azs]
 }
 
 # modifing the route table for the public subnet
@@ -71,6 +73,7 @@ resource "aws_route_table" "public" {
     Name  = "publicRT"
     Owner = var.owner
   }
+  
 }
 
 
@@ -85,6 +88,7 @@ resource "aws_route_table" "private" {
   tags = {
     Name = "PrivateRouteTable"
   }
+  depends_on = [aws_nat_gateway.nat_azs, aws_vpc.main]
 }
 
 
@@ -93,6 +97,7 @@ resource "aws_route_table_association" "public_subnets" {
   count          = length(aws_subnet.public_subnets)
   route_table_id = aws_route_table.public.id
   subnet_id      = aws_subnet.public_subnets[count.index].id
+  depends_on = [aws_subnet.public_subnets, aws_route_table.public]
 
 }
 
@@ -101,5 +106,6 @@ resource "aws_route_table_association" "private" {
   count          = length(aws_subnet.private)
   route_table_id = aws_route_table.private[count.index].id
   subnet_id      = aws_subnet.private[count.index].id
+  depends_on = [aws_subnet.private, aws_route_table.private]
 }
 

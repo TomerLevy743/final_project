@@ -21,7 +21,7 @@ resource "aws_iam_policy" "ebs_csi_policy" {
           "ec2:DescribeVolumes",
           "ec2:DescribeVolumesModifications"
         ]
-        Resource = "arn:aws:ec2:*:*:volume/*"
+        Resource = "*"
       },
       {
         Effect = "Allow"
@@ -34,6 +34,13 @@ resource "aws_iam_policy" "ebs_csi_policy" {
             "ec2:CreateAction" = "CreateVolume"
           }
         }
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "sts:AssumeRoleWithWebIdentity"
+        ]
+        Resource = "*"
       }
     ]
   })
@@ -48,12 +55,12 @@ resource "aws_iam_role" "ebs_csi_role" {
       {
         Effect = "Allow"
         Principal = {
-          Federated = var.oidc_arn
+          Federated = "arn:aws:iam::992382545251:oidc-provider/oidc.eks.${var.region}.amazonaws.com/id/${var.oidc_id}"
         }
         Action = "sts:AssumeRoleWithWebIdentity"
         Condition = {
           "StringEquals" = {
-            "oidc.eks.${var.region}.amazonaws.com/id/${var.oidc_id}:sub" = "system:serviceaccount:kube-system:ebs-csi-controller"
+            "oidc.eks.${var.region}.amazonaws.com/id/${var.oidc_id}:sub" = "system:serviceaccount:kube-system:ebs-csi-controller-sa"
           }
         }
       }
@@ -65,8 +72,29 @@ resource "aws_iam_policy_attachment" "ebs_csi_attach" {
   policy_arn = aws_iam_policy.ebs_csi_policy.arn
   roles      = [aws_iam_role.ebs_csi_role.name]
 }
-resource "aws_eks_addon" "ebs_csi" {
-  cluster_name             = var.clusterName
-  addon_name               = "aws-ebs-csi-driver"
-  service_account_role_arn = aws_iam_role.ebs_csi_role.arn
+resource "helm_release" "ebs_csi_driver" {
+  name       = "ebs-csi-driver"
+  namespace  = "kube-system"
+  repository = "https://kubernetes-sigs.github.io/aws-ebs-csi-driver/"
+  chart      = "aws-ebs-csi-driver"
+  version    = "2.41.0"  
+
+  values = [
+    <<EOF
+    controller:
+      replicaCount: 1
+    EOF
+  ]
+
+  set {
+    name  = "controller.serviceAccount.create"
+    value = "false"
+  }
+
+  set {
+    name  = "controller.serviceAccount.name"
+    value = "ebs-csi-controller-sa"
+  }
+
+  depends_on = [aws_iam_policy_attachment.ebs_csi_attach]
 }
