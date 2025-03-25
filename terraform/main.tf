@@ -38,6 +38,11 @@ module "rds" {
   owner       = var.owner
 }
 
+
+output "rds_endpoint" {
+  value = join("", regex("([^:]+)", module.rds.rds_endpoint))
+}
+
 #module "ebs" {
 #source      = "./modules/ebs"
 #region      = var.region

@@ -6,7 +6,7 @@ resource "helm_release" "status_page" {
   values = [
     yamlencode({
       status_page = {
-        dbhost = var.rds_endpoint
+        dbhost = join("", regex("([^:]+)", var.rds_endpoint))
       }
     })
   ]

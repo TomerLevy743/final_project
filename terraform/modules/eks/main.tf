@@ -12,7 +12,6 @@ resource "aws_eks_cluster" "this" {
   }
 
   depends_on = [
-    # aws_iam_role_policy_attachment.this,
     aws_iam_role_policy_attachment.eks_cluster_policy,
     var.vpc_id
   ]
@@ -84,9 +83,10 @@ resource "aws_eks_node_group" "eks_nodes" {
   remote_access {
     ec2_ssh_key = "GuyTamari-KeyPair" # Optional, for SSH access
   }
+  
   tags = {
-    Name = "tomer-guy-eks-node"
-    Owner = var.owner
+    Name  = "tomer-guy-eks-node"
+    Owner = var.owner # Ensure `var.owner` is defined in your variables
   }
 
   depends_on = [
