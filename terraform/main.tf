@@ -23,7 +23,8 @@ module "eks" {
     module.security_groups.backend-sg,
     module.security_groups.database-sg
   ]
-
+  owner  = var.owner
+  region = var.region
 }
 
 output "eks_oidc_issuer_url" {
@@ -34,10 +35,14 @@ module "rds" {
   source      = "./modules/rds"
   subnet_ids  = module.vpc.private_subnet_id
   database-sg = module.security_groups.database-sg
+  owner       = var.owner
 }
 
-#module "ingress" {
-#source       = "./modules/ingress3"
-#vpc_id       = module.vpc.vpc_id
-#cluster_name = "tomer-guy-statuspage-cluster"
-#}
+module "ebs" {
+  source      = "./modules/ebs"
+  region      = var.region
+  clusterName = module.eks.cluster_name
+  oidc_arn    = data.aws_iam_openid_connect_provider.eks.arn
+  oidc_id     = data.aws_iam_openid_connect_provider.eks.id
+
+}

@@ -30,16 +30,11 @@ variable "security_group_ids" {
   description = "The IDs of the security groups that will be attached to the EKS cluster"
   type        = list(string)
 }
-# variable "security_group_frontend" {
-#   description = "The ID of the frontend security group"
-#   type        = string
-# }
-# variable "security_group_backend" {
-#   description = "The ID of the backend security group"
-#   type        = string
-# }
-# variable "security_group_database" {
-#   description = "The ID of the database security group"
-#   type        = string
-
-# }
+variable "owner" {
+  description = "The user name of the cluster owner tag"
+  type        = string
+}
+variable "region" {
+  description = "The region the cluster is in"
+  type        = string
+}

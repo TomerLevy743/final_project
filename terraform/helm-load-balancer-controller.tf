@@ -34,7 +34,7 @@ resource "helm_release" "aws_load_balancer_controller" {
   }
 
   set {
-    name  = "ingressController.vpcId"
+    name  = "vpcId"
     value = module.vpc.vpc_id
   }
 

@@ -28,3 +28,7 @@ variable "database-sg" {
   description = "database sg"
   type        = string
 }
+variable "owner" {
+  description = "owner tag"
+  type        = string
+}
