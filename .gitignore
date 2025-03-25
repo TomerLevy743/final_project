@@ -10,6 +10,8 @@ create_ecr_secret.sh
 # C extensions
 *.so
 
+terraform/.terraform.lock.hcl
+.terraform.lock.hcl
 # Distribution / packaging
 .Python
 build/
