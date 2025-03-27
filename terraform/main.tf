@@ -11,6 +11,7 @@ module "security_groups" {
   owner     = var.owner
   from_port = var.from_port
   to_port   = var.to_port
+  eks_default_sg  = module.eks.eks_default_sg
 }
 
 module "eks" {
@@ -42,15 +43,6 @@ module "rds" {
 output "rds_endpoint" {
   value = join("", regex("([^:]+)", module.rds.rds_endpoint))
 }
-
-#module "ebs" {
-#source      = "./modules/ebs"
-#region      = var.region
-#clusterName = module.eks.cluster_name
-#oidc_arn    = data.aws_iam_openid_connect_provider.eks.arn
-#oidc_id     = data.aws_iam_openid_connect_provider.eks.id
-#depends_on  = [module.eks]
-#}
 
 
 module "status-page" {

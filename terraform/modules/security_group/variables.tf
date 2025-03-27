@@ -17,3 +17,7 @@ variable "to_port" {
   description = "to port"
   type        = list(number)
 }
+variable "eks_default_sg" {
+  description = "The default security group for EKS"
+  type        = string
+}
