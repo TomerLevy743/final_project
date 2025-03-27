@@ -88,7 +88,6 @@ resource "aws_eks_node_group" "eks_nodes" {
     Name  = "tomer-guy-eks-node"
     Owner = var.owner # Ensure `var.owner` is defined in your variables
   }
-
   depends_on = [
     aws_iam_role_policy_attachment.eks_worker_node_policy,
     aws_eks_cluster.this
@@ -148,4 +147,69 @@ resource "kubernetes_config_map" "aws_auth" {
           - system:masters
     EOT
   }
+}
+
+
+data "aws_autoscaling_groups" "eks_asg" {
+  filter {
+    name   = "tag:eks:nodegroup-name"
+    values = [var.node_group_name]
+  }
+  depends_on = [aws_eks_node_group.eks_nodes]
+}
+
+resource "aws_autoscaling_group_tag" "eks_tags" {
+  for_each = {
+    "Name"  = "tomer-guy-eks-node"
+    "Owner" = var.owner
+
+  }
+
+  autoscaling_group_name = tolist(data.aws_autoscaling_groups.eks_asg.names)[0]
+  tag {
+    key                 = each.key
+    value               = each.value
+    propagate_at_launch = true
+  }
+}
+resource "aws_iam_role" "asg_role" {
+  name = "asg_role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "autoscaling.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+resource "aws_iam_policy" "asg_tagging_policy" {
+  name        = "ASGTaggingPolicy"
+  description = "Policy to allow ASG to apply tags to instances"
+  policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Effect = "Allow"
+        Action = [
+          "autoscaling:CreateOrUpdateTags",
+          "ec2:CreateTags",
+          "ec2:DescribeInstances",
+          "ec2:ModifyInstanceAttribute"
+        ]
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "attach_asg_tagging_policy" {
+  role       = aws_iam_role.asg_role.name
+  policy_arn = aws_iam_policy.asg_tagging_policy.arn
 }
