@@ -85,14 +85,16 @@ resource "aws_security_group" "backend-sg" {
 
 resource "aws_security_group" "database-sg" {
   name        = "database-sg-tomer&guy"
-  description = "allow database cummunication"
+  description = "allow database communication"
   vpc_id      = var.vpc_id
 
   ingress {
     from_port       = 5432
     to_port         = 5432
     protocol        = "tcp"
-    security_groups = [aws_security_group.backend-sg.id, var.eks_default_sg]
+    security_groups = [aws_security_group.backend-sg.id
+    # var.eks_default_sg
+    ]
   }
   ingress {
     from_port       = 6379

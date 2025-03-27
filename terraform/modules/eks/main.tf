@@ -16,7 +16,9 @@ resource "aws_eks_cluster" "this" {
     var.vpc_id
   ]
 }
-
+data "aws_eks_cluster" "this" {
+  name = aws_eks_cluster.this.name
+}
 resource "aws_iam_role" "eks_cluster_role" {
   name = "eks-cluster-role-tomer-guy"
 

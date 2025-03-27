@@ -25,7 +25,7 @@ output "eks_oidc_issuer_url" {
 
 
 data "aws_security_group" "eks_default" {
-  id = data.aws_eks_cluster.this.vpc_config[0].security_group_ids[0]
+  id = tolist(data.aws_eks_cluster.this.vpc_config[0].security_group_ids)[0]
 }
 
 output "eks_default_sg" {
