@@ -69,7 +69,7 @@ resource "aws_iam_role_policy_attachment" "eks_cni_policy" {
 
 resource "aws_eks_node_group" "eks_nodes" {
   cluster_name    = var.cluster_name
-  node_group_name = "eks-node-group"
+  node_group_name = var.node_group_name
   node_role_arn   = aws_iam_role.eks_node_group_role.arn
   subnet_ids      = var.subnet_ids
   instance_types  = ["t3.medium"] # Choose instance type
@@ -83,7 +83,7 @@ resource "aws_eks_node_group" "eks_nodes" {
   remote_access {
     ec2_ssh_key = "GuyTamari-KeyPair" # Optional, for SSH access
   }
-  
+
   tags = {
     Name  = "tomer-guy-eks-node"
     Owner = var.owner # Ensure `var.owner` is defined in your variables
