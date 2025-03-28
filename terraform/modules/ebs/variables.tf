@@ -1,16 +1,12 @@
-variable "region" {
-  description = "The region the cluster is in"
-  type        = string
-}
-variable "clusterName" {
+variable "cluster_name" {
   description = "cluster name"
   type        = string
 }
-variable "oidc_id" {
-  description = "oidc id"
+variable "eks_url" {
+  description = "EKS URL"
   type        = string
 }
-variable "oidc_arn" {
-  description = "oidc arn"
+variable "eks_nodes_up" {
+  description = "EKS nodes up"
   type        = string
 }

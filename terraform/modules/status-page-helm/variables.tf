@@ -3,3 +3,7 @@ variable "rds_endpoint" {
   type        = string
 
 }
+variable "ebs_complete" {
+  description = "the ebs complete"
+  type        = string
+}

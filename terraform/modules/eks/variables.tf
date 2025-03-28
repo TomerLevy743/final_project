@@ -31,10 +31,10 @@ variable "subnet_ids" {
   description = "The IDs of the subnets where the nodes will be created"
   type        = list(string)
 }
-variable "security_group_ids" {
-  description = "The IDs of the security groups that will be attached to the EKS cluster"
-  type        = list(string)
-}
+# variable "security_group_ids" {
+#   description = "The IDs of the security groups that will be attached to the EKS cluster"
+#   type        = list(string)
+# }
 variable "owner" {
   description = "The user name of the cluster owner tag"
   type        = string

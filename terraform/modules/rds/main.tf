@@ -1,26 +1,57 @@
-resource "aws_db_instance" "statuspage_db" {
-  identifier             = "tomer-guy-statuspage-db"
-  engine                 = "postgres"
-  engine_version         = "17.2"
-  instance_class         = "db.t3.micro"
-  allocated_storage      = 20
-  storage_type           = "gp2"
-  username               = "admin_statuspage"
-  password               = "0123456789"
-  db_name                = "db_statuspage"
-  publicly_accessible    = false
-  skip_final_snapshot    = true
-  vpc_security_group_ids = [var.database-sg]
-  db_subnet_group_name   = aws_db_subnet_group.statuspage_subnet_group.name
-  tags = {
-    Owner = var.owner
-  }
-}
+module "rds" {
+  source  = "terraform-aws-modules/rds/aws"
+  version = "6.3.0"
 
-resource "aws_db_subnet_group" "statuspage_subnet_group" {
-  name       = "statuspage-subnet-group-tomer-guy"
-  subnet_ids = var.subnet_ids
+  identifier = "tomer-guy-rds-instance"
+
+  engine            = "postgres"
+  engine_version    = "17.2"
+  instance_class    = "db.t3.micro"
+  allocated_storage = 20
+
+  db_name  = "db_statuspage"
+  username = "admin_statuspage"
+  password = "0123456789"
+
+  vpc_security_group_ids  = [var.database-sg]
+  subnet_ids              = var.subnet_ids
+  multi_az                = false
+  publicly_accessible     = false
+  storage_encrypted       = true
+  backup_retention_period = 7
+
+  # Add the db_parameter_group configuration here
+  parameter_group_name = "tomer-guy-db-parameter-group"
+  family               = "postgres17"
+
   tags = {
     Owner = var.owner
   }
 }
+# resource "aws_db_instance" "statuspage_db" {
+#   identifier             = "tomer-guy-statuspage-db"
+#   engine                 = "postgres"
+#   engine_version         = "17.2"
+#   instance_class         = "db.t3.micro"
+#   allocated_storage      = 20
+#   storage_type           = "gp2"
+#   username               = "admin_statuspage"
+#   password               = "0123456789"
+#   db_name                = "db_statuspage"
+#   publicly_accessible    = false
+#   skip_final_snapshot    = true
+#   vpc_security_group_ids = [var.database-sg]
+#   db_subnet_group_name   = aws_db_subnet_group.statuspage_subnet_group.name
+#   tags = {
+#     Owner = var.owner
+#   }
+# }
+
+# resource "aws_db_subnet_group" "statuspage_subnet_group" {
+#   name       = "statuspage-subnet-group-tomer-guy"
+#   subnet_ids = var.subnet_ids
+#   tags = {
+#     Owner = var.owner
+#   }
+# }
+
