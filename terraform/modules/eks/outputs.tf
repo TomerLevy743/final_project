@@ -31,3 +31,6 @@ data "aws_security_group" "eks_default" {
 output "eks_default_sg" {
   value = data.aws_security_group.eks_default.id
 }
+# output "eks_oidc_issuer_url" {
+#   value = module.eks.eks_oidc_issuer_url
+# }

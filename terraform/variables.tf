@@ -28,5 +28,5 @@ variable "to_port" {
 variable "owner" {
   description = "Owner tag for the resources"
   type        = string
-  default     = "guytamari"
+  default     = "tomerlevy"
 }
