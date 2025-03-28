@@ -18,9 +18,9 @@ data "aws_iam_openid_connect_provider" "eks" {
   ]
 }
 
-output "oidc_arn" {
-  value = data.aws_iam_openid_connect_provider.eks.arn
-}
+# output "oidc_arn" {
+#   value = data.aws_iam_openid_connect_provider.eks.arn
+# }
 
 output "oidc_id" {
   value = data.aws_iam_openid_connect_provider.eks.id

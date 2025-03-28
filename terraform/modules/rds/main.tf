@@ -14,6 +14,7 @@ module "rds" {
   password = "0123456789"
 
   vpc_security_group_ids  = [var.database-sg]
+  db_subnet_group_name    = aws_db_subnet_group.statuspage_subnet_group.name
   subnet_ids              = var.subnet_ids
   multi_az                = false
   publicly_accessible     = false
@@ -21,7 +22,7 @@ module "rds" {
   backup_retention_period = 7
 
   # Add the db_parameter_group configuration here
-  parameter_group_name = "tomer-guy-db-parameter-group"
+  # parameter_group_name = "tomer-guy-db-parameter-group"
   family               = "postgres17"
 
   tags = {
@@ -47,11 +48,10 @@ module "rds" {
 #   }
 # }
 
-# resource "aws_db_subnet_group" "statuspage_subnet_group" {
-#   name       = "statuspage-subnet-group-tomer-guy"
-#   subnet_ids = var.subnet_ids
-#   tags = {
-#     Owner = var.owner
-#   }
-# }
-
+resource "aws_db_subnet_group" "statuspage_subnet_group" {
+  name       = "statuspage-subnet-group-tomer-guy"
+  subnet_ids = var.subnet_ids
+  tags = {
+    Owner = var.owner
+  }
+}

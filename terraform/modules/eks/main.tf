@@ -19,7 +19,14 @@ module "eks" {
   depends_on = [var.vpc_id]
 }
 
+# resource "aws_kms_alias" "this" {
+#   name          = "alias/eks/tomer-guy-statuspage-cluster"
+#   target_key_id = "10a036de-88bc-4b16-bace-fc06c0aaa521"
 
+#   lifecycle {
+#     ignore_changes = [name]
+#   }
+# }
 
 # resource "aws_eks_cluster" "this" {
 #   name     = var.cluster_name

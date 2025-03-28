@@ -42,8 +42,15 @@ module "rds" {
   owner       = var.owner
 }
 
-# module "status-page" {
-#   source       = "./modules/status-page-helm"
-#   rds_endpoint = module.rds.rds_endpoint
+# module "alb" {
+#   source      = "./modules/alb"
+#   oidc_arn    = module.rds.oidc_arn
+#   vpc_id      = module.vpc.vpc_id
 # }
+
+
+module "status-page" {
+  source       = "./modules/status-page-helm"
+  rds_endpoint = module.rds.rds_endpoint
+}
 
