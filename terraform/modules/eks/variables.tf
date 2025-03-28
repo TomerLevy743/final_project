@@ -18,11 +18,7 @@ variable "enable_cluster_creator_admin_permissions" {
   type        = bool
   default     = true
 }
-variable "node_group_name" {
-  description = "value of the node group name"
-  type        = string
-  default     = "eks-node-group"
-}
+
 variable "vpc_id" {
   description = "The ID of the VPC where the cluster will be created"
   type        = string

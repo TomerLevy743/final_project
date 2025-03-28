@@ -22,12 +22,18 @@ module "security_groups" {
   eks_default_sg = module.eks.eks_default_sg
 }
 
+module "node_group" {
+  source       = "./modules/node_group"
+  cluster_name = module.eks.cluster_name
+  subnet_ids   = concat(module.vpc.public_subnet_id, module.vpc.private_subnet_id)
+  owner        = var.owner
+}
 
 module "ebs" {
   source       = "./modules/ebs"
   cluster_name = module.eks.cluster_name
   eks_url      = module.eks.eks_oidc_issuer_url
-  eks_nodes_up = module.eks.cluster_nodes_up
+  eks_nodes_up = module.node_group.cluster_nodes_up
 }
 module "rds" {
   source      = "./modules/rds"
@@ -40,3 +46,4 @@ module "rds" {
 #   source       = "./modules/status-page-helm"
 #   rds_endpoint = module.rds.rds_endpoint
 # }
+

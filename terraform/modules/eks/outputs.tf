@@ -37,6 +37,3 @@ output "eks_default_sg" {
 # output "eks_oidc_issuer_url" {
 #   value = module.eks.eks_oidc_issuer_url
 # }
-output "cluster_nodes_up" {
-  value = module.eks_node_group.node_group_id
-}
