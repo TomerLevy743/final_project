@@ -82,7 +82,8 @@ data "aws_iam_policy_document" "eks_csi_driver_policy" {
       "ec2:DeleteVolume",
       "ec2:AttachVolume",
       "ec2:DetachVolume",
-      "ec2:CreateTags"
+      "ec2:CreateTags",
+      "ec2:DescribeInstances"
     ]
     resources = ["*"]
   }

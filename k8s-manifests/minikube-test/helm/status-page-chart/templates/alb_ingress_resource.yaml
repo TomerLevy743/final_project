@@ -13,6 +13,7 @@ metadata:
     alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:992382545251:certificate/4c35c483-4d3c-413c-a95a-14c0aae5b5e2"
     external-dns.alpha.kubernetes.io/hostname: "status-page.org"
 spec:
+  ingressClassName: alb
   rules:
     - host: status-page.org
       http:
