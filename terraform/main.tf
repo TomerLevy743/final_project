@@ -19,7 +19,7 @@ module "security_groups" {
   owner          = var.owner
   from_port      = var.from_port
   to_port        = var.to_port
-  eks_default_sg = module.eks.eks_default_sg
+  eks_default_sg = module.eks.cluster_security_group_id
 }
 
 module "node_group" {
@@ -48,7 +48,7 @@ module "rds" {
 
 module "alb" {
   source   = "./modules/alb"
-  oidc_arn = module.eks.oidc_provider_arn
+  eks_arn  = module.eks.oidc_provider_arn
   vpc_id   = module.vpc.vpc_id
 }
 

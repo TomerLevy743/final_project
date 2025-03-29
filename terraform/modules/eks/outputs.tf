@@ -39,3 +39,7 @@ output "oidc_provider_arn" {
 output "eks_id" {
   value = module.eks.oidc_provider_arn
 }
+
+output "cluster_security_group_id" {
+  value = module.eks.cluster_security_group_id
+}

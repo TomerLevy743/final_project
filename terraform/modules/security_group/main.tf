@@ -93,7 +93,7 @@ resource "aws_security_group" "database-sg" {
     to_port   = 5432
     protocol  = "tcp"
     security_groups = [aws_security_group.backend-sg.id,
-      # var.eks_default_sg
+      var.eks_default_sg
     ]
   }
   ingress {

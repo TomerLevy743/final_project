@@ -46,12 +46,12 @@ data "aws_iam_policy_document" "alb_controller_assume_role_policy" {
     effect  = "Allow"
     condition {
       test     = "StringEquals"
-      variable = "oidc.eks.us-east-1.amazonaws.com/id/218B0D71A3323E8C0F2D60493CCEA631:sub"
+      variable = "${var.eks_arn}:sub"
       values   = ["system:serviceaccount:kube-system:aws-load-balancer-controller"]
     }
     principals {
       type        = "Federated"
-      identifiers = ["arn:aws:iam::992382545251:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/218B0D71A3323E8C0F2D60493CCEA631"]
+      identifiers = [var.eks_arn]
     }
   }
 }
