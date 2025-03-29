@@ -52,16 +52,15 @@ data "aws_iam_policy_document" "eks_csi_assume_role_policy" {
     actions = [
       "sts:AssumeRoleWithWebIdentity"
     ]
-    effect  = "Allow"
+    effect = "Allow"
     condition {
       test     = "StringEquals"
-      variable = "oidc.eks.us-east-1.amazonaws.com/id/218B0D71A3323E8C0F2D60493CCEA631:sub"
+      variable = "oidc.eks.us-east-1.amazonaws.com/id/${var.eks_id}:sub"
       values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
     }
     principals {
       type        = "Federated"
-      identifiers = ["arn:aws:iam::992382545251:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/218B0D71A3323E8C0F2D60493CCEA631"
-]
+      identifiers = [var.eks_arn]
     }
   }
 }

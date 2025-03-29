@@ -33,5 +33,8 @@ output "eks_default_sg" {
 }
 data "aws_caller_identity" "current" {}
 output "oidc_provider_arn" {
-  value = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/oidc.eks.${var.region}.amazonaws.com/id/${var.cluster_name}"
+  value = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/oidc.eks.${var.region}.amazonaws.com/id/${module.eks.cluster_arn}"
+}
+output "eks_id" {
+  value = module.eks.cluster_id
 }

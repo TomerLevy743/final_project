@@ -6,7 +6,10 @@ variable "eks_url" {
   description = "EKS URL"
   type        = string
 }
-
+variable "eks_id" {
+  description = "EKS ID"
+  type        = string
+}
 variable "eks_nodes_up" {
   description = "EKS nodes up"
   type        = string
@@ -18,10 +21,10 @@ variable "eks_arn" {
 
 variable "oidc_provider_arn" {
   description = "oidc arn"
-  type = string
+  type        = string
 }
 
 variable "region" {
   description = "region"
-  type = string
+  type        = string
 }

@@ -30,13 +30,14 @@ module "node_group" {
 }
 
 module "ebs" {
-  source       = "./modules/ebs"
-  cluster_name = module.eks.cluster_name
-  eks_url      = module.eks.eks_oidc_issuer_url
-  eks_arn      = module.eks.oidc_provider_arn
-  eks_nodes_up = module.node_group.cluster_nodes_up
+  source            = "./modules/ebs"
+  cluster_name      = module.eks.cluster_name
+  eks_url           = module.eks.eks_oidc_issuer_url
+  eks_arn           = module.eks.oidc_provider_arn
+  eks_nodes_up      = module.node_group.cluster_nodes_up
   oidc_provider_arn = module.eks.oidc_provider_arn
-  region = var.region
+  eks_id            = module.eks.cluster_id
+  region            = var.region
 }
 module "rds" {
   source      = "./modules/rds"
@@ -46,9 +47,9 @@ module "rds" {
 }
 
 module "alb" {
-  source      = "./modules/alb"
-  oidc_arn    = module.eks.oidc_provider_arn
-  vpc_id      = module.vpc.vpc_id
+  source   = "./modules/alb"
+  oidc_arn = module.eks.oidc_provider_arn
+  vpc_id   = module.vpc.vpc_id
 }
 
 
