@@ -16,24 +16,22 @@ output "cluster_token" {
 
 output "cluster_certificate_authority_data" {
   value = module.eks.cluster_certificate_authority_data
-  # aws_eks_cluster.this.certificate_authority[0].data
 }
 
 
 output "eks_oidc_issuer_url" {
   value = module.eks.cluster_oidc_issuer_url
-  # aws_eks_cluster.this.identity[0].oidc[0].issuer
 }
 
 
 data "aws_security_group" "eks_default" {
   id = module.eks.cluster_security_group_id
-  # id = tolist(data.aws_eks_cluster.this.vpc_config[0].security_group_ids)[0]
 }
 
 output "eks_default_sg" {
   value = module.eks.cluster_security_group_id
 }
-# output "eks_oidc_issuer_url" {
-#   value = module.eks.eks_oidc_issuer_url
-# }
+data "aws_caller_identity" "current" {}
+output "oidc_provider_arn" {
+  value = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/oidc.eks.${var.region}.amazonaws.com/id/${var.cluster_name}"
+}

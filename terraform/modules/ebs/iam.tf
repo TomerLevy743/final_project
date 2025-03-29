@@ -2,29 +2,27 @@ data "tls_certificate" "eks" {
   url = var.eks_url
 }
 
-resource "aws_iam_openid_connect_provider" "eks" {
-  client_id_list  = ["sts.amazonaws.com"]
-  thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
-  url             = var.eks_url
-  lifecycle {
-    ignore_changes = [url] # Ignore changes to the URL field if the provider already exists
-  }
-}
+# resource "aws_iam_openid_connect_provider" "eks" {
+#   client_id_list  = ["sts.amazonaws.com"]
+#   thumbprint_list = [data.tls_certificate.eks.certificates[0].sha1_fingerprint]
+#   url             = var.eks_url
+#   # lifecycle {
+#   #   ignore_changes = [var.eks_url] # Ignore changes to the URL field if the provider already exists
+#   # }
+# }
 
-data "aws_iam_openid_connect_provider" "eks" {
-  url = var.eks_url
-  depends_on = [data.tls_certificate.eks,
-    aws_iam_openid_connect_provider.eks
-  ]
-}
+
 
 # output "oidc_arn" {
 #   value = data.aws_iam_openid_connect_provider.eks.arn
 # }
 
-output "oidc_id" {
-  value = data.aws_iam_openid_connect_provider.eks.id
-}
+# output "oidc_id" {
+#   value = data.aws_iam_openid_connect_provider.eks.id
+# }
+
+
+# Step 3: Construct the OIDC Provider ARN
 
 data "aws_iam_policy_document" "csi" {
   statement {
@@ -33,12 +31,12 @@ data "aws_iam_policy_document" "csi" {
 
     condition {
       test     = "StringEquals"
-      variable = "${replace(aws_iam_openid_connect_provider.eks.url, "https://", "")}:sub"
+      variable = "${replace(var.eks_url, "https://", "")}:sub"
       values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
     }
 
     principals {
-      identifiers = [aws_iam_openid_connect_provider.eks.arn]
+      identifiers = [var.eks_arn]
       type        = "Federated"
     }
   }
