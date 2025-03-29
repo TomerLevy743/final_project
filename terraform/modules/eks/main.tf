@@ -16,8 +16,10 @@ module "eks" {
   tags = {
     Owner = var.owner
   }
-  depends_on = [var.vpc_id]
+  cluster_encryption_config = [] # Disable encryption
+  depends_on                = [var.vpc_id]
 }
+
 
 # resource "aws_kms_alias" "this" {
 #   name          = "alias/eks/tomer-guy-statuspage-cluster"
