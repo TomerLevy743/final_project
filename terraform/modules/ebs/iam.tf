@@ -20,7 +20,7 @@ data "aws_iam_policy_document" "eks_csi_assume_role_policy" {
     }
     principals {
       type        = "Federated"
-      identifiers = [var.eks_arn]
+      identifiers = ["arn:aws:iam::992382545251:oidc-provider/${var.eks_arn}"]
     }
   }
 }

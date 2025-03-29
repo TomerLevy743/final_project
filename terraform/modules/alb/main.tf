@@ -43,7 +43,7 @@ data "aws_iam_policy_document" "alb_controller_assume_role_policy" {
     actions = [
       "sts:AssumeRoleWithWebIdentity"
     ]
-    effect  = "Allow"
+    effect = "Allow"
     condition {
       test     = "StringEquals"
       variable = "${var.eks_arn}:sub"
@@ -51,7 +51,7 @@ data "aws_iam_policy_document" "alb_controller_assume_role_policy" {
     }
     principals {
       type        = "Federated"
-      identifiers = [var.eks_arn]
+      identifiers = ["arn:aws:iam::992382545251:oidc-provider/${var.eks_arn}"]
     }
   }
 }
@@ -68,60 +68,60 @@ resource "aws_iam_policy" "eks_alb_controller_policy" {
 data "aws_iam_policy_document" "alb_controller_policy" {
   statement {
     actions = [
-                "elasticloadbalancing:CreateLoadBalancer",
-                "elasticloadbalancing:CreateTargetGroup",
-                "elasticloadbalancing:CreateListener",
-                "elasticloadbalancing:CreateRule",
-                "elasticloadbalancing:ModifyLoadBalancerAttributes",
-                "elasticloadbalancing:ModifyTargetGroup",
-                "elasticloadbalancing:ModifyTargetGroupAttributes",
-                "elasticloadbalancing:ModifyListener",
-                "elasticloadbalancing:AddTags",
-                "elasticloadbalancing:RemoveTags",
-                "elasticloadbalancing:DeleteLoadBalancer",
-                "elasticloadbalancing:DeleteTargetGroup",
-                "elasticloadbalancing:DeleteListener",
-                "elasticloadbalancing:DeleteRule",
-                "elasticloadbalancing:RegisterTargets",
-                "elasticloadbalancing:DeregisterTargets",
-                "elasticloadbalancing:SetIpAddressType",
-                "elasticloadbalancing:SetSecurityGroups",
-                "elasticloadbalancing:SetSubnets",
-                "ec2:AuthorizeSecurityGroupIngress",
-                "ec2:RevokeSecurityGroupIngress",
-                "ec2:CreateSecurityGroup",
-                "ec2:DeleteSecurityGroup",
-                "ec2:CreateTags",
-                "ec2:DeleteTags",
-                "ec2:ModifyInstanceAttribute",
-                "ec2:ModifyNetworkInterfaceAttribute",
-                "ec2:ModifySecurityGroupRules",
-                "acm:DescribeCertificate",
-                "acm:ListCertificates",
-                "acm:GetCertificate",
-                "ec2:DescribeAccountAttributes",
-                "ec2:DescribeAddresses",
-                "ec2:DescribeInternetGateways",
-                "ec2:DescribeVpcs",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeSecurityGroups",
-                "ec2:DescribeInstances",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribeTags",
-                "ec2:GetCoipPoolUsage",
-                "ec2:DescribeCoipPools",
-                "ec2:DescribeAvailabilityZones",
-                "elasticloadbalancing:DescribeLoadBalancers",
-                "elasticloadbalancing:DescribeLoadBalancerAttributes",
-                "elasticloadbalancing:DescribeListeners",
-                "elasticloadbalancing:DescribeListenerCertificates",
-                "elasticloadbalancing:DescribeSSLPolicies",
-                "elasticloadbalancing:DescribeRules",
-                "elasticloadbalancing:DescribeTargetGroups",
-                "elasticloadbalancing:DescribeTargetGroupAttributes",
-                "elasticloadbalancing:DescribeTargetHealth",
-                "elasticloadbalancing:DescribeTags",
-                "elasticloadbalancing:DescribeListenerAttributes"
+      "elasticloadbalancing:CreateLoadBalancer",
+      "elasticloadbalancing:CreateTargetGroup",
+      "elasticloadbalancing:CreateListener",
+      "elasticloadbalancing:CreateRule",
+      "elasticloadbalancing:ModifyLoadBalancerAttributes",
+      "elasticloadbalancing:ModifyTargetGroup",
+      "elasticloadbalancing:ModifyTargetGroupAttributes",
+      "elasticloadbalancing:ModifyListener",
+      "elasticloadbalancing:AddTags",
+      "elasticloadbalancing:RemoveTags",
+      "elasticloadbalancing:DeleteLoadBalancer",
+      "elasticloadbalancing:DeleteTargetGroup",
+      "elasticloadbalancing:DeleteListener",
+      "elasticloadbalancing:DeleteRule",
+      "elasticloadbalancing:RegisterTargets",
+      "elasticloadbalancing:DeregisterTargets",
+      "elasticloadbalancing:SetIpAddressType",
+      "elasticloadbalancing:SetSecurityGroups",
+      "elasticloadbalancing:SetSubnets",
+      "ec2:AuthorizeSecurityGroupIngress",
+      "ec2:RevokeSecurityGroupIngress",
+      "ec2:CreateSecurityGroup",
+      "ec2:DeleteSecurityGroup",
+      "ec2:CreateTags",
+      "ec2:DeleteTags",
+      "ec2:ModifyInstanceAttribute",
+      "ec2:ModifyNetworkInterfaceAttribute",
+      "ec2:ModifySecurityGroupRules",
+      "acm:DescribeCertificate",
+      "acm:ListCertificates",
+      "acm:GetCertificate",
+      "ec2:DescribeAccountAttributes",
+      "ec2:DescribeAddresses",
+      "ec2:DescribeInternetGateways",
+      "ec2:DescribeVpcs",
+      "ec2:DescribeSubnets",
+      "ec2:DescribeSecurityGroups",
+      "ec2:DescribeInstances",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DescribeTags",
+      "ec2:GetCoipPoolUsage",
+      "ec2:DescribeCoipPools",
+      "ec2:DescribeAvailabilityZones",
+      "elasticloadbalancing:DescribeLoadBalancers",
+      "elasticloadbalancing:DescribeLoadBalancerAttributes",
+      "elasticloadbalancing:DescribeListeners",
+      "elasticloadbalancing:DescribeListenerCertificates",
+      "elasticloadbalancing:DescribeSSLPolicies",
+      "elasticloadbalancing:DescribeRules",
+      "elasticloadbalancing:DescribeTargetGroups",
+      "elasticloadbalancing:DescribeTargetGroupAttributes",
+      "elasticloadbalancing:DescribeTargetHealth",
+      "elasticloadbalancing:DescribeTags",
+      "elasticloadbalancing:DescribeListenerAttributes"
     ]
     resources = ["*"]
   }
@@ -151,42 +151,42 @@ resource "kubernetes_service_account" "alb_controller_service_account" {
 
 
 
- resource "helm_release" "alb-controller" {
- name       = "aws-load-balancer-controller"
- repository = "https://aws.github.io/eks-charts"
- chart      = "aws-load-balancer-controller"
- namespace  = "kube-system"
- depends_on = [
-     kubernetes_service_account.alb_controller_service_account
- ]
+resource "helm_release" "alb-controller" {
+  name       = "aws-load-balancer-controller"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-load-balancer-controller"
+  namespace  = "kube-system"
+  depends_on = [
+    kubernetes_service_account.alb_controller_service_account
+  ]
 
- set {
-     name  = "region"
-     value = "us-east-1"
- }
+  set {
+    name  = "region"
+    value = "us-east-1"
+  }
 
- set {
-     name  = "vpcId"
-     value = var.vpc_id
- }
+  set {
+    name  = "vpcId"
+    value = var.vpc_id
+  }
 
- set {
-     name  = "image.repository"
-     value = "602401143452.dkr.ecr.us-east-1.amazonaws.com/amazon/aws-load-balancer-controller"
- }
+  set {
+    name  = "image.repository"
+    value = "602401143452.dkr.ecr.us-east-1.amazonaws.com/amazon/aws-load-balancer-controller"
+  }
 
- set {
-     name  = "serviceAccount.create"
-     value = "false"
- }
+  set {
+    name  = "serviceAccount.create"
+    value = "false"
+  }
 
- set {
-     name  = "serviceAccount.name"
-     value = "aws-load-balancer-controller"
- }
+  set {
+    name  = "serviceAccount.name"
+    value = "aws-load-balancer-controller"
+  }
 
- set {
-     name  = "clusterName"
-     value = "tomer-guy-statuspage-cluster"
- }
- }
+  set {
+    name  = "clusterName"
+    value = "tomer-guy-statuspage-cluster"
+  }
+}
