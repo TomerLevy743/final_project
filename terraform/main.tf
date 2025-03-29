@@ -36,7 +36,7 @@ module "ebs" {
   eks_arn           = module.eks.oidc_provider_arn
   eks_nodes_up      = module.node_group.cluster_nodes_up
   oidc_provider_arn = module.eks.oidc_provider_arn
-  eks_id            = module.eks.cluster_id
+  eks_id            = module.eks.eks_id
   region            = var.region
 }
 module "rds" {
