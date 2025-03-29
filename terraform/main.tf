@@ -45,7 +45,7 @@ module "rds" {
 
 module "alb" {
   source      = "./modules/alb"
-  oidc_arn    = module.ebs.oidc_arn
+  oidc_arn    = module.eks.oidc_provider_arn
   vpc_id      = module.vpc.vpc_id
 }
 
