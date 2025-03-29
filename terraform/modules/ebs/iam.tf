@@ -24,56 +24,72 @@ data "tls_certificate" "eks" {
 
 # Step 3: Construct the OIDC Provider ARN
 
-data "aws_iam_policy_document" "csi" {
-  statement {
-    actions = ["sts:AssumeRoleWithWebIdentity"]
-    effect  = "Allow"
+# data "aws_iam_policy_document" "csi" {
+#   statement {
+#     actions = ["sts:AssumeRoleWithWebIdentity"]
+#     effect  = "Allow"
 
+#     condition {
+#       test     = "StringEquals"
+#       variable = "${replace(var.eks_url, "https://", "")}:sub"
+#       values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
+#     }
+
+#     principals {
+#       identifiers = [var.eks_arn]
+#       type        = "Federated"
+#     }
+#   }
+# }
+
+resource "aws_iam_role" "eks_ebs_csi_driver" {
+  assume_role_policy = data.aws_iam_policy_document.eks_csi_assume_role_policy.json
+  name               = "eks-ebs-csi-driver"
+}
+
+data "aws_iam_policy_document" "eks_csi_assume_role_policy" {
+  statement {
+    actions = [
+      "sts:AssumeRoleWithWebIdentity"
+    ]
+    effect  = "Allow"
     condition {
       test     = "StringEquals"
-      variable = "${replace(var.eks_url, "https://", "")}:sub"
+      variable = "oidc.eks.us-east-1.amazonaws.com/id/218B0D71A3323E8C0F2D60493CCEA631:sub"
       values   = ["system:serviceaccount:kube-system:ebs-csi-controller-sa"]
     }
-
     principals {
-      identifiers = [var.eks_arn]
       type        = "Federated"
+      identifiers = ["arn:aws:iam::992382545251:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/218B0D71A3323E8C0F2D60493CCEA631"
+]
     }
   }
 }
 
-resource "aws_iam_role" "eks_ebs_csi_driver" {
-  assume_role_policy = data.aws_iam_policy_document.csi.json
-  name               = "eks-ebs-csi-driver"
+resource "aws_iam_policy" "eks_csi_driver_policy" {
+  name        = "eks-csi-driver-policy"
+  description = "Policy for EKS CSI driver to interact with EBS"
+
+  policy = data.aws_iam_policy_document.eks_csi_driver_policy.json
 }
+
+data "aws_iam_policy_document" "eks_csi_driver_policy" {
+  statement {
+    actions = [
+      "ec2:DescribeVolumes",
+      "ec2:DescribeSnapshots",
+      "ec2:CreateVolume",
+      "ec2:DeleteVolume",
+      "ec2:AttachVolume",
+      "ec2:DetachVolume",
+      "ec2:CreateTags"
+    ]
+    resources = ["*"]
+  }
+}
+
 
 resource "aws_iam_role_policy_attachment" "amazon_ebs_csi_driver" {
   role       = aws_iam_role.eks_ebs_csi_driver.name
-  policy_arn = "arn:aws:iam::aws:policy/service-role/AmazonEBSCSIDriverPolicy"
-}
-
-resource "aws_iam_policy" "ebs_csi_permissions" {
-  name        = "ebs-csi-permissions"
-  description = "Policy to allow EBS CSI driver to create and manage unencrypted EBS volumes"
-  policy = jsonencode({
-    Version = "2012-10-17"
-    Statement = [
-      {
-        Effect = "Allow"
-        Action = [
-          "ec2:CreateVolume",
-          "ec2:DescribeVolumes",
-          "ec2:AttachVolume",
-          "ec2:DeleteVolume",
-          "ec2:ModifyVolume"
-        ]
-        Resource = "*"
-      }
-    ]
-  })
-}
-
-resource "aws_iam_role_policy_attachment" "ebs_csi_policy_attachment" {
-  role       = aws_iam_role.eks_worker_role.name
-  policy_arn = aws_iam_policy.ebs_csi_permissions.arn
+  policy_arn = aws_iam_policy.eks_csi_driver_policy.arn
 }

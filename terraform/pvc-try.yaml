@@ -6,7 +6,7 @@ provisioner: ebs.csi.aws.com
 parameters:
   type: "gp2"
   fsType: ext4
-  encrypted: "false"
+  encrypted: "true"
 reclaimPolicy: Retain
 allowVolumeExpansion: true
 volumeBindingMode: WaitForFirstConsumer

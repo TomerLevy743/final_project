@@ -15,3 +15,13 @@ variable "eks_arn" {
   description = "EKS ARN"
   type        = string
 }
+
+variable "oidc_provider_arn" {
+  description = "oidc arn"
+  type = string
+}
+
+variable "region" {
+  description = "region"
+  type = string
+}
