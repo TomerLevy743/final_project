@@ -42,11 +42,11 @@ module "rds" {
   owner       = var.owner
 }
 
-# module "alb" {
-#   source      = "./modules/alb"
-#   oidc_arn    = module.rds.oidc_arn
-#   vpc_id      = module.vpc.vpc_id
-# }
+module "alb" {
+  source      = "./modules/alb"
+  oidc_arn    = module.ebs.oidc_arn
+  vpc_id      = module.vpc.vpc_id
+}
 
 
 module "status-page" {
@@ -54,3 +54,8 @@ module "status-page" {
   rds_endpoint = module.rds.rds_endpoint
 }
 
+# module "route53" {
+#   source           = "./modules/route53"
+#   route53_name     = var.route53_name
+#   route53_zoneID   = var.route53_zoneID
+# }

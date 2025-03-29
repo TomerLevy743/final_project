@@ -30,3 +30,16 @@ variable "owner" {
   type        = string
   default     = "tomerlevy"
 }
+
+
+variable "route53_name" {
+  description = "name of the dns"
+  type = string
+  default = "status-page.org"
+}
+
+variable "route53_zoneID" {
+  description = "zone id"
+  type = string
+  default = "Z04520012OG00EVC9GKI3"
+}
