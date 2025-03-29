@@ -6,7 +6,12 @@ variable "eks_url" {
   description = "EKS URL"
   type        = string
 }
+
 variable "eks_nodes_up" {
   description = "EKS nodes up"
+  type        = string
+}
+variable "eks_arn" {
+  description = "EKS ARN"
   type        = string
 }
