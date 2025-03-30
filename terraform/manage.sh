@@ -15,7 +15,6 @@ fi
 
 echo "⚡ Running 'terraform $ACTION' for module: $MODULE..."
 
-terraform plan -target=module.$MODULE
 terraform $ACTION -auto-approve -target=module.$MODULE
 
 if [[ $? -ne 0 ]]; then

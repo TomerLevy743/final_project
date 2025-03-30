@@ -13,7 +13,7 @@ module "eks" {
   owner  = var.owner
   region = var.region
 }
-module "security_groups" {
+module "security_group" {
   source         = "./modules/security_group"
   vpc_id         = module.vpc.vpc_id
   owner          = var.owner
@@ -44,7 +44,7 @@ module "ebs" {
 module "rds" {
   source      = "./modules/rds"
   subnet_ids  = module.vpc.private_subnet_id
-  database-sg = module.security_groups.database-sg
+  database-sg = module.security_group.database-sg
   owner       = var.owner
 }
 

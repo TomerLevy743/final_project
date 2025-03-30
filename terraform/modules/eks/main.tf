@@ -12,10 +12,11 @@ module "eks" {
 
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
-
+  create_cloudwatch_log_group     = false
   tags = {
     Owner = var.owner
   }
+  # manage_aws_auth_configmap = true
   aws_auth_users = [
     {
       userarn  = "arn:aws:iam::992382545251:user/guytamari"

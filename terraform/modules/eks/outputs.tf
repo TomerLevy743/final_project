@@ -23,14 +23,6 @@ output "eks_oidc_issuer_url" {
   value = module.eks.cluster_oidc_issuer_url
 }
 
-
-data "aws_security_group" "eks_default" {
-  id = module.eks.cluster_security_group_id
-}
-
-output "eks_default_sg" {
-  value = module.eks.cluster_security_group_id
-}
 data "aws_caller_identity" "current" {}
 output "oidc_provider_arn" {
   value = module.eks.oidc_provider

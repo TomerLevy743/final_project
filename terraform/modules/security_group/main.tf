@@ -32,7 +32,7 @@ resource "aws_security_group" "elb_sg" {
 
 # front end SG
 resource "aws_security_group" "frontend-sg" {
-  name        = "frontend-sg-tomer&guy"
+  name        = "frontend-sg-tomer-guy"
   description = "allow traffic from LB only"
   vpc_id      = var.vpc_id
 
@@ -53,14 +53,14 @@ resource "aws_security_group" "frontend-sg" {
   }
 
   tags = {
-    Name  = "frontend-sg-tomer&guy"
+    Name  = "frontend-sg-tomer-guy"
     Owner = var.owner
   }
 }
 
 # backend-sg SG
 resource "aws_security_group" "backend-sg" {
-  name        = "backend-sg-tomer&guy"
+  name        = "backend-sg-tomer-guy"
   description = "allow HTTP"
   vpc_id      = var.vpc_id
 
@@ -78,13 +78,13 @@ resource "aws_security_group" "backend-sg" {
   }
 
   tags = {
-    Name  = "backend-sg-tomer&guy"
+    Name  = "backend-sg-tomer-guy"
     Owner = var.owner
   }
 }
 
 resource "aws_security_group" "database-sg" {
-  name        = "database-sg-tomer&guy"
+  name        = "database-sg-tomer-guy"
   description = "allow database communication"
   vpc_id      = var.vpc_id
 
@@ -110,7 +110,7 @@ resource "aws_security_group" "database-sg" {
   }
 
   tags = {
-    Name  = "database-sg-tomer&guy"
+    Name  = "database-sg-tomer-guy"
     Owner = var.owner
   }
 }
