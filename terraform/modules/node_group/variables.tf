@@ -7,6 +7,14 @@ variable "cluster_name" {
   type        = string
   default     = "tomer-guy-statuspage-cluster"
 }
+variable "cluster_security_group_id" {
+  description = "The security group ID of the EKS cluster"
+  type        = string
+}
+variable "cluster_nodes_security_group_id" {
+  description = "value of the cluster nodes security group id"
+  type        = string
+}
 variable "node_group_name" {
   description = "value of the node group name"
   type        = string

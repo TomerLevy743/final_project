@@ -6,6 +6,10 @@ module "eks_node_group" {
   cluster_name = var.cluster_name
   subnet_ids   = var.subnet_ids
 
+  cluster_primary_security_group_id = var.cluster_security_group_id
+  # module.eks.cluster_primary_security_group_id
+  vpc_security_group_ids = [var.cluster_nodes_security_group_id]
+
   instance_types = ["t3.medium"]
   desired_size   = 2
   min_size       = 1

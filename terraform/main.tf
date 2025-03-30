@@ -19,14 +19,16 @@ module "security_groups" {
   owner          = var.owner
   from_port      = var.from_port
   to_port        = var.to_port
-  eks_default_sg = module.eks.cluster_security_group_id
+  eks_default_sg = module.eks.node_group_security_group_id
 }
 
 module "node_group" {
-  source       = "./modules/node_group"
-  cluster_name = module.eks.cluster_name
-  subnet_ids   = concat(module.vpc.public_subnet_id, module.vpc.private_subnet_id)
-  owner        = var.owner
+  source                          = "./modules/node_group"
+  cluster_name                    = module.eks.cluster_name
+  subnet_ids                      = concat(module.vpc.public_subnet_id, module.vpc.private_subnet_id)
+  cluster_security_group_id       = module.eks.cluster_security_group_id
+  cluster_nodes_security_group_id = module.eks.node_group_security_group_id
+  owner                           = var.owner
 }
 
 module "ebs" {
@@ -47,9 +49,9 @@ module "rds" {
 }
 
 module "alb" {
-  source   = "./modules/alb"
-  eks_arn  = module.eks.oidc_provider_arn
-  vpc_id   = module.vpc.vpc_id
+  source  = "./modules/alb"
+  eks_arn = module.eks.oidc_provider_arn
+  vpc_id  = module.vpc.vpc_id
 }
 
 
