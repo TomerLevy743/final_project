@@ -60,8 +60,8 @@ module "status-page" {
   rds_endpoint = module.rds.rds_endpoint
 }
 
-# module "route53" {
-#   source           = "./modules/route53"
-#   route53_name     = var.route53_name
-#   route53_zoneID   = var.route53_zoneID
-# }
+module "route53" {
+  source           = "./modules/route53"
+  route53_name     = var.route53_name
+  route53_zoneID   = var.route53_zoneID
+}

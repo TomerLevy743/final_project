@@ -39,6 +39,7 @@ resource "aws_db_instance" "statuspage_db" {
   username               = "admin_statuspage"
   password               = "0123456789"
   db_name                = "db_statuspage"
+  parameter_group_name = aws_db_parameter_group.parameter_group.name
   publicly_accessible    = false
   skip_final_snapshot    = true
   vpc_security_group_ids = [var.database-sg]
@@ -47,6 +48,24 @@ resource "aws_db_instance" "statuspage_db" {
     Owner = var.owner
   }
 }
+
+
+
+resource "aws_db_parameter_group" "parameter_group" {
+  name   = "tomer-guy-pg"
+  family = "postgres17"
+
+  parameter {
+    name  = "rds.force_ssl"
+    value = "0"
+  }
+
+  tags = {
+    Name = "tomer-guy-pg"
+    Owner = var.owner
+  }
+}
+
 
 resource "aws_db_subnet_group" "statuspage_subnet_group" {
   name       = "statuspage-subnet-group-tomer-guy"
