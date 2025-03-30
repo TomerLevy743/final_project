@@ -28,18 +28,18 @@ variable "to_port" {
 variable "owner" {
   description = "Owner tag for the resources"
   type        = string
-  default     = "guytamari"
+  default     = "tomerlevy"
 }
 
 
 variable "route53_name" {
   description = "name of the dns"
-  type = string
-  default = "status-page.org"
+  type        = string
+  default     = "status-page.org"
 }
 
 variable "route53_zoneID" {
   description = "zone id"
-  type = string
-  default = "Z04520012OG00EVC9GKI3"
+  type        = string
+  default     = "Z04520012OG00EVC9GKI3"
 }

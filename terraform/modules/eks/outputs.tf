@@ -29,7 +29,7 @@ data "aws_security_group" "eks_default" {
 }
 
 output "eks_default_sg" {
-  value = module.eks.cluster_security_group_id
+  value = module.eks.node_security_group_id
 }
 data "aws_caller_identity" "current" {}
 output "oidc_provider_arn" {
