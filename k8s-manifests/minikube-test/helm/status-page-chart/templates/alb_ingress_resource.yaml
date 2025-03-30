@@ -9,17 +9,28 @@ metadata:
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
-    #alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": {"Protocol": "HTTPS", "Port":"443", "StatusCode": "HTTP_301"}}'
+    alb.ingress.kubernetes.io/actions.ssl-redirect: '{"Type": "redirect", "RedirectConfig": {"Protocol": "HTTPS", "Port": "443", "StatusCode": "HTTP_301", "Host": "status-page.org"}}'
     alb.ingress.kubernetes.io/load-balancer-name: "tomer-guy-loadbalancer"
     alb.ingress.kubernetes.io/backend-protocol: HTTP
     alb.ingress.kubernetes.io/success-codes: "200-499"
     #alb.ingress.kubernetes.io/ssl-redirect: "443"
-    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:992382545251:certificate/4c35c483-4d3c-413c-a95a-14c0aae5b5e2"
+    alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:992382545251:certificate/a2b84f0f-c6ca-4494-9338-ebcbca05971d"
     external-dns.alpha.kubernetes.io/hostname: "status-page.org"
 spec:
   ingressClassName: alb
   rules:
     - host: "status-page.org"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx
+                port:
+                  number: 80
+
+    - host: "www.status-page.org"
       http:
         paths:
           - path: /
