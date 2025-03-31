@@ -4,14 +4,7 @@ nginx:
   image:
     repository: 992382545251.dkr.ecr.us-east-1.amazonaws.com/tomer-guy-final-project/nginx
     tag: latest
-# postgresql:
-#   replicas: 1
-#   image:
-#     repository: 992382545251.dkr.ecr.us-east-1.amazonaws.com/tomer-guy-final-project/sql
-#     tag: latest
-#   username: "admin_statuspage"
-#   password: "0123456789"
-#   database: "db_statuspage"
+
 
 
 
