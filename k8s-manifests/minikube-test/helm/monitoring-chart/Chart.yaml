@@ -1,0 +1,8 @@
+apiVersion: v2
+name: monitoring-chart
+description: A Helm chart for deploying monitoring stack in EKS
+version: 0.1.0
+dependencies:
+  - name: kube-prometheus-stack
+    version: "51.2.0"
+    repository: "https://prometheus-community.github.io/helm-charts"

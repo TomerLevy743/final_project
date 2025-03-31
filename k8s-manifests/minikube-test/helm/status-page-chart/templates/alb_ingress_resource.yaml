@@ -13,9 +13,7 @@ metadata:
     alb.ingress.kubernetes.io/load-balancer-name: "tomer-guy-loadbalancer"
     alb.ingress.kubernetes.io/backend-protocol: HTTP
     alb.ingress.kubernetes.io/success-codes: "200-499"
-    #alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/certificate-arn: "arn:aws:acm:us-east-1:992382545251:certificate/a2b84f0f-c6ca-4494-9338-ebcbca05971d"
-    # external-dns.alpha.kubernetes.io/hostname: "status-page.org"
 spec:
   ingressClassName: alb
   rules:
@@ -29,14 +27,10 @@ spec:
                 name: nginx
                 port:
                   number: 80
-
-    - host: "www.status-page.org"
-      http:
-        paths:
-          - path: /
+          - path: /grafana
             pathType: Prefix
             backend:
               service:
-                name: nginx
+                name: monitoring-grafana
                 port:
                   number: 80

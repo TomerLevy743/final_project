@@ -87,6 +87,7 @@ data "aws_iam_policy_document" "alb_controller_policy" {
       "elasticloadbalancing:SetIpAddressType",
       "elasticloadbalancing:SetSecurityGroups",
       "elasticloadbalancing:SetSubnets",
+      "elasticloadbalancing:ModifyRule",
       "ec2:AuthorizeSecurityGroupIngress",
       "ec2:RevokeSecurityGroupIngress",
       "ec2:CreateSecurityGroup",
