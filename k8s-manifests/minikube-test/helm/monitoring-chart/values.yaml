@@ -4,3 +4,9 @@ grafana:
     type: ClusterIP
   ingress:
     enabled: false
+  auth:
+    login_url: /grafana-login
+  # ini:
+  #   server:
+  #     domain: status-page.org
+  #     root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana" 
