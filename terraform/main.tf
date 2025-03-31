@@ -28,7 +28,7 @@ module "security_group" {
 module "node_group" {
   source                          = "./modules/node_group"
   cluster_name                    = module.eks.cluster_name
-  node_group_name                 = "${var.naming}eks-node-group"
+  node_group_name                 = "${var.naming}ng"
   subnet_ids                      = concat(module.vpc.public_subnet_id, module.vpc.private_subnet_id)
   cluster_security_group_id       = module.eks.cluster_security_group_id
   cluster_nodes_security_group_id = module.eks.node_group_security_group_id

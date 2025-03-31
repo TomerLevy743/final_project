@@ -4,9 +4,19 @@ grafana:
     type: ClusterIP
   ingress:
     enabled: false
-  auth:
-    login_url: /grafana-login
-  # ini:
-  #   server:
-  #     domain: status-page.org
-  #     root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana" 
+  grafana.ini:
+    server:
+      root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+      serve_from_sub_path: true
+
+  # Persistence settings to retain data across restarts
+  persistence:
+    enabled: true
+    storageClassName: gp2
+    accessModes:
+      - ReadWriteOnce
+    size: 10Gi
+
+  # Admin credentials
+  adminUser: admin
+  adminPassword: admin123

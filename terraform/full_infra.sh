@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODULES=(vpc eks node_group ebs security_group rds alb status-page route53)
+MODULES=(vpc eks node_group ebs security_group rds alb status-page monitoring route53)
 
 if [[ $# -ne 1 ]]; then
     echo "Usage: $0 [apply|destroy]"
@@ -16,7 +16,7 @@ fi
 
 for MODULE in "${MODULES[@]}"; do
     echo "⚡ Running 'terraform $ACTION' for module: $MODULE..."
-    terraform $ACTION -auto-approve -target=module.$MODULE -parallelism=30
+    terraform $ACTION -auto-approve -target=module.$MODULE -parallelism=30 -var-file="terraform.tfvars"
     
     if [[ $? -ne 0 ]]; then
         echo "❌ Terraform $ACTION failed for module: $MODULE"
