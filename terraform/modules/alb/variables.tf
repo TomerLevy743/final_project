@@ -8,7 +8,7 @@ variable "vpc_id" {
   type        = string
 
 }
-variable "naming" {
-  description = "the naming of the resources"
+variable "cluster_name" {
+  description = "cluster name"
   type        = string
 }

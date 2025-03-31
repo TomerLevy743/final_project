@@ -188,6 +188,6 @@ resource "helm_release" "alb-controller" {
 
   set {
     name  = "clusterName"
-    value = "${var.naming}-statuspage-cluster"
+    value = var.cluster_name
   }
 }

@@ -57,10 +57,10 @@ module "rds" {
 }
 
 module "alb" {
-  source  = "./modules/alb"
-  eks_arn = module.eks.oidc_provider_arn
-  vpc_id  = module.vpc.vpc_id
-  naming  = var.naming
+  source       = "./modules/alb"
+  eks_arn      = module.eks.oidc_provider_arn
+  vpc_id       = module.vpc.vpc_id
+  cluster_name = module.eks.cluster_name
 }
 
 
