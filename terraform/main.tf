@@ -67,9 +67,9 @@ module "alb" {
 module "status-page" {
   source                      = "./modules/status-page-helm"
   rds_endpoint                = module.rds.rds_endpoint
-  db_name                     = module.rds.db_name
-  db_user                     = module.rds.db_user
-  rds_password                = module.rds.rds_password
+  db_name                     = var.db_name
+  db_user                     = var.db_username
+  rds_password                = var.db_password
   secret_key                  = var.secret_key
   superuser_name              = var.superuser_name
   superuser_password          = var.superuser_password
