@@ -5,8 +5,21 @@ resource "helm_release" "status_page" {
 
   values = [
     yamlencode({
+      nginx = {
+        image = {
+          repository = var.image_repository_nginx
+          tag        = "latest"
+        }
+      }
       status_page = {
-        dbhost = var.rds_endpoint
+        image = {
+          repository = var.image_repository_statuspage
+          tag        = "latest"
+        }
+        dbhost     = var.rds_endpoint
+        dbname     = var.db_name
+        dbuser     = var.db_user
+        dbpassword = var.rds_password
       }
     })
   ]

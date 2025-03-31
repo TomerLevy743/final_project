@@ -1,7 +1,6 @@
 variable "cluster_name" {
   description = "The name of the EKS cluster"
   type        = string
-  default     = "tomer-guy-statuspage-cluster"
 }
 variable "cluster_version" {
   description = "The version of the EKS cluster"

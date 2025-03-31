@@ -5,6 +5,10 @@ variable "eks_arn" {
 
 variable "vpc_id" {
   description = "vpc id"
-  type = string
-  
+  type        = string
+
+}
+variable "naming" {
+  description = "the naming of the resources"
+  type        = string
 }

@@ -30,16 +30,16 @@
 #   }
 # }
 resource "aws_db_instance" "statuspage_db" {
-  identifier             = "tomer-guy-statuspage-db"
+  identifier             = "${var.naming}statuspage-db"
   engine                 = "postgres"
   engine_version         = "17.2"
   instance_class         = "db.t3.micro"
   allocated_storage      = 20
   storage_type           = "gp2"
-  username               = "admin_statuspage"
-  password               = "0123456789"
-  db_name                = "db_statuspage"
-  parameter_group_name = aws_db_parameter_group.parameter_group.name
+  username               = var.db_username
+  password               = var.db_password
+  db_name                = var.db_name
+  parameter_group_name   = aws_db_parameter_group.parameter_group.name
   publicly_accessible    = false
   skip_final_snapshot    = true
   vpc_security_group_ids = [var.database-sg]
@@ -52,7 +52,7 @@ resource "aws_db_instance" "statuspage_db" {
 
 
 resource "aws_db_parameter_group" "parameter_group" {
-  name   = "tomer-guy-pg"
+  name   = "${var.naming}pg"
   family = "postgres17"
 
   parameter {
@@ -61,14 +61,14 @@ resource "aws_db_parameter_group" "parameter_group" {
   }
 
   tags = {
-    Name = "tomer-guy-pg"
+    Name  = "tomer-guy-pg"
     Owner = var.owner
   }
 }
 
 
 resource "aws_db_subnet_group" "statuspage_subnet_group" {
-  name       = "statuspage-subnet-group-tomer-guy"
+  name       = "${var.naming}statuspage-subnet-group"
   subnet_ids = var.subnet_ids
   tags = {
     Owner = var.owner

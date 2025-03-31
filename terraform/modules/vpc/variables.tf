@@ -13,4 +13,7 @@ variable "owner" {
   type        = string
   default     = "tomerlevy"
 }
-
+variable "naming" {
+  description = "the naming of the resources"
+  type        = string
+}

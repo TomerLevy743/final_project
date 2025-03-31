@@ -16,19 +16,7 @@ module "eks" {
   tags = {
     Owner = var.owner
   }
-  # manage_aws_auth_configmap = true
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::992382545251:user/guytamari"
-      username = "guytamari"
-      groups   = ["system:masters"]
-    },
-    {
-      userarn  = "arn:aws:iam::992382545251:user/tomerlevy"
-      username = "tomerlevy"
-      groups   = ["system:masters"]
-    }
-  ]
+
   cluster_encryption_config = [] # Disable encryption
   depends_on                = [var.vpc_id]
 }

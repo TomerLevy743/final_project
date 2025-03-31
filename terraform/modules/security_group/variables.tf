@@ -6,7 +6,6 @@ variable "vpc_id" {
 variable "owner" {
   description = "Owner tag for the security groups"
   type        = string
-  default     = "tomerlevy"
 }
 
 variable "from_port" {
@@ -19,5 +18,9 @@ variable "to_port" {
 }
 variable "eks_default_sg" {
   description = "The default security group for EKS"
+  type        = string
+}
+variable "naming" {
+  description = "the naming of the resources"
   type        = string
 }

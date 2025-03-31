@@ -3,7 +3,7 @@ resource "aws_vpc" "main" {
   cidr_block         = var.vpc_cidr
   enable_dns_support = true
   tags = {
-    Name  = "mainVPC-tomer&guy"
+    Name  = "${var.naming}mainVPC"
     Owner = var.owner
   }
 }
@@ -16,8 +16,8 @@ resource "aws_subnet" "public_subnets" {
 
   map_public_ip_on_launch = true
   tags = {
-    Name  = "public-subnet-${count.index}"
-    Owner = var.owner
+    Name                     = "public-subnet-${count.index}"
+    Owner                    = var.owner
     "kubernetes.io/role/elb" = "1"
   }
 }
@@ -28,8 +28,8 @@ resource "aws_subnet" "private" {
   availability_zone = var.availability_zones[count.index]
   cidr_block        = "10.0.${50 + count.index}.0/24"
   tags = {
-    Name  = "private-subnet-${count.index}"
-    Owner = var.owner
+    Name                              = "private-subnet-${count.index}"
+    Owner                             = var.owner
     "kubernetes.io/role/internal-elb" = "1"
   }
 
@@ -42,7 +42,7 @@ resource "aws_internet_gateway" "main" {
     Name  = "mainGW"
     Owner = var.owner
   }
-  
+
 }
 # elastic ip for the nat in each az
 resource "aws_eip" "nat_azs" {
@@ -73,7 +73,7 @@ resource "aws_route_table" "public" {
     Name  = "publicRT"
     Owner = var.owner
   }
-  
+
 }
 
 
@@ -97,7 +97,7 @@ resource "aws_route_table_association" "public_subnets" {
   count          = length(aws_subnet.public_subnets)
   route_table_id = aws_route_table.public.id
   subnet_id      = aws_subnet.public_subnets[count.index].id
-  depends_on = [aws_subnet.public_subnets, aws_route_table.public]
+  depends_on     = [aws_subnet.public_subnets, aws_route_table.public]
 
 }
 
@@ -106,6 +106,6 @@ resource "aws_route_table_association" "private" {
   count          = length(aws_subnet.private)
   route_table_id = aws_route_table.private[count.index].id
   subnet_id      = aws_subnet.private[count.index].id
-  depends_on = [aws_subnet.private, aws_route_table.private]
+  depends_on     = [aws_subnet.private, aws_route_table.private]
 }
 
