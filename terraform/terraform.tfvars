@@ -10,7 +10,7 @@ route53_name   = "status-page.org"
 route53_zoneID = "Z04520012OG00EVC9GKI3"
 
 #key
-secert_key = "O32MGYzFbXL4EqKgVpwrDT)8s5L05A-z%Rcfr67Blzp@g7!d0@"
+secret_key = "O32MGYzFbXL4EqKgVpwrDT)8s5L05A-z%Rcfr67Blzp@g7!d0@"
 
 #Django Super User
 superuser_name     = "admin"

@@ -70,7 +70,7 @@ module "status-page" {
   db_name                     = module.rds.db_name
   db_user                     = module.rds.db_user
   rds_password                = module.rds.rds_password
-  secert_key                  = var.secert_key
+  secret_key                  = var.secret_key
   superuser_name              = var.superuser_name
   superuser_password          = var.superuser_password
   superuser_email             = var.superuser_email

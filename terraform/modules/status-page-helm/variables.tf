@@ -27,7 +27,7 @@ variable "superuser_email" {
   description = "the superuser email"
   type        = string
 }
-variable "secert_key" {
+variable "secret_key" {
   description = "the secret key"
   type        = string
 }

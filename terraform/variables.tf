@@ -43,7 +43,7 @@ variable "route53_zoneID" {
   description = "zone id"
   type        = string
 }
-variable "secert_key" {
+variable "secret_key" {
   description = "the secret key"
   type        = string
 }
