@@ -6,7 +6,8 @@ grafana:
     enabled: false
   grafana.ini:
     server:
-      root_url: "%(protocol)s://%(domain)s:%(http_port)s/grafana"
+      domain: status-page.org
+      root_url: "%(protocol)s://%(domain)s/grafana/"
       serve_from_sub_path: true
 
   # Persistence settings to retain data across restarts
