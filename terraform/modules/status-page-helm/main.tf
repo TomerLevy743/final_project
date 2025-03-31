@@ -24,3 +24,37 @@ resource "helm_release" "status_page" {
     })
   ]
 }
+
+
+# resource "kubernetes_config_map" "grafana_config" {
+#   metadata {
+#     name      = "monitoring-grafana"
+#     namespace = "default"
+
+#     labels = {
+#       "app.kubernetes.io/instance"    = "monitoring"
+#       "app.kubernetes.io/managed-by"  = "Helm"
+#       "app.kubernetes.io/name"        = "grafana"
+#       "app.kubernetes.io/version"     = "10.1.2"
+#       "helm.sh/chart"                 = "grafana-6.59.5"
+#     }
+
+#     annotations = {
+#       "meta.helm.sh/release-name"      = "monitoring"
+#       "meta.helm.sh/release-namespace" = "default"
+#     }
+#   }
+
+#   data = {
+#     "grafana.ini" = chomp(<<-EOT
+#     [server]
+#     domain = status-page.org
+#     root_url = %(protocol)s://%(domain)s/grafana/
+#     serve_from_sub_path = true
+#     EOT
+#     )
+#   }
+#   lifecycle {
+#     ignore_changes = [data]
+#   }
+# }
