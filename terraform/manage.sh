@@ -15,7 +15,7 @@ fi
 
 echo "⚡ Running 'terraform $ACTION' for module: $MODULE..."
 
-terraform $ACTION -auto-approve -target=module.$MODULE -parallelism=30
+terraform $ACTION -auto-approve -target=module.$MODULE -parallelism=30 -var-file="terraform.tfvars"
 
 if [[ $? -ne 0 ]]; then
     echo "❌ Terraform $ACTION failed for module: $MODULE"
