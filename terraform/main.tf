@@ -83,6 +83,10 @@ module "monitoring" {
   source = "./modules/monitoring"
 }
 
+module "efk" {
+  source = "./modules/efk"
+}
+
 module "route53" {
   source         = "./modules/route53"
   route53_name   = var.route53_name
