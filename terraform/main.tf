@@ -87,6 +87,7 @@ module "efk" {
   source  = "./modules/efk"
   eks_arn = module.eks.oidc_provider_arn
   region  = var.region
+  cluster_name      = module.eks.cluster_name
 }
 
 module "route53" {

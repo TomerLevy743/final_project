@@ -1,0 +1,46 @@
+serviceAccount:
+  create: true  # Since you're creating it in Terraform
+  name: fluent-bit  # Must match your IAM role's service account
+
+daemonset:
+  enabled: true  # Ensure DaemonSet is deployed
+
+backend:
+  type: opensearch  # Specify OpenSearch as the backend
+
+config:
+  service: |
+
+  ## https://docs.fluentbit.io/manual/pipeline/outputs
+  outputs: |
+    [OUTPUT]
+        Name opensearch
+        Match kube.*
+        Host opensearch.status-page.org  # OpenSearch host
+        Port 443  # OpenSearch port (assuming HTTPS)
+        TLS On  # Enable TLS
+        AWS_Region us-east-1  # AWS region
+        AWS_Auth On  # Use AWS authentication
+        Log_Level debug  # Debug logging
+        Suppress_Type_Name On  # Suppress the document type in index
+
+    [OUTPUT]
+        Name opensearch
+        Match host.*
+        Host opensearch.status-page.org  # OpenSearch host
+        Port 443  # OpenSearch port (assuming HTTPS)
+        TLS On  # Enable TLS
+        Logstash_Format On  # Logstash format enabled
+        Logstash_Prefix node  # Prefix for node logs
+        Retry_Limit False  # Disable retry limit
+
+# You can also configure the OpenSearch backend like this
+outputs:
+  opensearch:
+    host: "opensearch.status-page.org"
+    port: 443
+    tls: On
+    region: "us-east-1"
+    aws_auth: On
+    log_level: debug
+    suppress_type_name: On

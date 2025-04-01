@@ -12,7 +12,7 @@ module "eks" {
 
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
-  create_cloudwatch_log_group     = false
+  create_cloudwatch_log_group     = true
   tags = {
     Owner = var.owner
   }

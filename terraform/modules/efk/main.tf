@@ -1,14 +1,4 @@
 
-
-
-
-
-
-
-
-
-
-
 resource "aws_iam_role" "fluentbit_role" {
   name = "fluentbit-opensearch-role"
 
@@ -22,29 +12,28 @@ resource "aws_iam_role" "fluentbit_role" {
       Action = "sts:AssumeRoleWithWebIdentity"
       Condition = {
         StringEquals = {
-          "${var.eks_arn}:sub" = "system:serviceaccount:default:fluentbit"
+          "${var.eks_arn}:sub" = "system:serviceaccount:kube-system:fluentbit"
         }
       }
     }]
   })
 }
 
+
 resource "aws_iam_policy" "fluentbit_opensearch_policy" {
   name        = "FluentBitOpenSearchAccess"
-  description = "Allows Fluent Bit to write logs to OpenSearch"
+  description = "IAM policy for Fluent Bit to push logs to CloudWatch"
 
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [{
       Effect   = "Allow"
       Action   = [
-        "es:ESHttpPost",
-        "es:ESHttpPut",
-        "es:ESHttpGet",
-        "es:ESHttpDelete",
-        "es:ESHttpHead"
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
       ]
-      Resource = "arn:aws:es:${var.region}:992382545251:domain/opensearch-tomer-guy/*"
+      Resource = "arn:aws:es:${var.region}:992382545251:log-group:/aws/eks/${var.cluster_name}/fluentbit:*"
     }]
   })
 }
@@ -54,17 +43,52 @@ resource "aws_iam_role_policy_attachment" "fluentbit_opensearch_attach" {
   policy_arn = aws_iam_policy.fluentbit_opensearch_policy.arn
 }
 
-
+resource "kubernetes_service_account" "fluentbit_sa" {
+  metadata {
+    name      = "fluentbit"
+    namespace = "kube-system"
+    annotations = {
+      "eks.amazonaws.com/role-arn" = aws_iam_role.fluentbit_role.arn
+    }
+  }
+}
 
 
 resource "helm_release" "fluentbit" {
-  name       = "fluent-bit"
+  name       = "fluentbit"
   repository = "https://fluent.github.io/helm-charts"
   chart      = "fluent-bit"
+  namespace  = "kube-system"
 
-  values = [
-    file("../k8s-manifests/minikube-test/helm/monitoring-chart/fluent-bit-config.yaml")
-  ]
+  set {
+    name  = "serviceAccount.create"
+    value = "false" # Use the existing service account created above
+  }
+
+  set {
+    name  = "serviceAccount.name"
+    value = kubernetes_service_account.fluentbit_sa.metadata[0].name
+  }
+
+  set {
+    name  = "backend.type"
+    value = "cloudwatch"
+  }
+
+  set {
+    name  = "backend.cloudwatch.region"
+    value = var.region
+  }
+
+  set {
+    name  = "backend.cloudwatch.logGroupName"
+    value = "/aws/eks/${var.cluster_name}/fluentbit"
+  }
+
+  set {
+    name  = "backend.cloudwatch.logStreamPrefix"
+    value = "eks-logs/"
+  }
 }
 
 

@@ -9,3 +9,8 @@ variable "region" {
   description = "region"
   type        = string
 }
+
+variable "cluster_name" {
+  description = "cluster name"
+  type = string
+}

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-MODULES=(vpc eks node_group ebs security_group rds alb status-page monitoring route53)
+MODULES=(vpc eks node_group ebs security_group rds alb status-page monitoring efk route53)
 
 if [[ $# -ne 1 ]]; then
     echo "Usage: $0 [apply|destroy]"
@@ -12,6 +12,12 @@ ACTION="$1"
 if [[ "$ACTION" != "apply" && "$ACTION" != "destroy" ]]; then
     echo "Error: Invalid action '$ACTION'. Use 'apply' or 'destroy'."
     exit 1
+fi
+
+if [[ "$ACTION" == "destroy" ]]; then
+    MODULES=("${MODULES[@]}")
+    MODULES=("${MODULES[@]: -1:1}" "${MODULES[@]:0:${#MODULES[@]}-1}")  # Reverse the list
+    MODULES=("${MODULES[@]}" | tac)  # Ensure full reversal
 fi
 
 for MODULE in "${MODULES[@]}"; do
