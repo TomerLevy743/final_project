@@ -1,7 +1,7 @@
 
 region             = "us-east-1"
 availability_zones = ["us-east-1a", "us-east-1b"]
-
+owner              = "guytamari"
 #prefix for resource naming
 naming = "tomer-guy-"
 

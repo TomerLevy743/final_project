@@ -84,9 +84,9 @@ module "monitoring" {
 }
 
 module "efk" {
-  source = "./modules/efk"
-  eks_arn           = module.eks.oidc_provider_arn
-  region            = var.region
+  source  = "./modules/efk"
+  eks_arn = module.eks.oidc_provider_arn
+  region  = var.region
 }
 
 module "route53" {

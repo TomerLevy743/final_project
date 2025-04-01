@@ -41,17 +41,17 @@ grafana:
     size: 10Gi
   datasources:
     elasticsearch:
-      url: "https://elasticsearch-master.default.svc.cluster.local:9200"  # Replace this with the ALB URL
+      url: "https://elasticsearch-master.default.svc.cluster.local:9200" # Replace this with the ALB URL
       access: "proxy"
       basic_auth:
         enabled: true
-        username: "elastic"  # Provide the necessary username
-        password: "admin123"  # Provide the necessary password
+        username: "elastic" # Provide the necessary username
+        password: "admin123" # Provide the necessary password
       ssl:
         enabled: true
-        skip_verify: true  # Set to true only for self-signed certs
-      index: "eks-logs*"        # Your index pattern
-      time_field_name: "@timestamp"  # The field name for time-based data
+        skip_verify: true # Set to true only for self-signed certs
+      index: "eks-logs*" # Your index pattern
+      time_field_name: "@timestamp" # The field name for time-based data
 
   # Admin credentials
   # adminUser: admin
@@ -75,23 +75,24 @@ grafana:
           editable: true
           options:
             path: /var/lib/grafana/dashboards/grafana-dashboards-kubernetes
-  dashboards:
-    grafana-dashboards-kubernetes:
-      k8s-system-api-server:
-        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-api-server.json
-        token: ""
-      k8s-system-coredns:
-        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-system-coredns.json
-        token: ""
-      k8s-views-global:
-        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-global.json
-        token: ""
-      k8s-views-namespaces:
-        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-namespaces.json
-        token: ""
-      k8s-views-nodes:
-        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-nodes.json
-        token: ""
-      k8s-views-pods:
-        url: https://raw.githubusercontent.com/dotdc/grafana-dashboards-kubernetes/master/dashboards/k8s-views-pods.json
-        token: ""
+  sidecar:
+    dashboards:
+      enabled: true
+      searchNamespace: ALL
+
+  extraConfigMaps:
+    - name: grafana-dashboards-k8s
+      mountPath: /var/lib/grafana/dashboards/k8s
+      data:
+        k8s-system-api-server.json: |
+          {{ .Files.Get "dashboards/k8s-system-api-server.json" | indent 4 }}
+        k8s-system-coredns.json: |
+          {{ .Files.Get "dashboards/k8s-system-coredns.json" | indent 4 }}
+        k8s-views-global.json: |
+          {{ .Files.Get "dashboards/k8s-views-global.json" | indent 4 }}
+        k8s-views-namespaces.json: |
+          {{ .Files.Get "dashboards/k8s-views-namespaces.json" | indent 4 }}
+        k8s-views-nodes.json: |
+          {{ .Files.Get "dashboards/k8s-views-nodes.json" | indent 4 }}
+        k8s-views-pods.json: |
+          {{ .Files.Get "dashboards/k8s-views-pods.json" | indent 4 }}
