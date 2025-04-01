@@ -33,9 +33,8 @@ resource "helm_release" "monitoring" {
 }
 resource "null_resource" "update_configmap" {
   provisioner "local-exec" {
-    command = <<EOT
-      kubectl apply -f ../k8s-manifests/minikube-test/helm/monitoring-chart/grafana-config.yaml
-      kubectl rollout restart deployment monitoring-grafana -n default 
-    EOT
+      command = "bash eks-config.sh && kubectl apply -f ../k8s-manifests/minikube-test/helm/monitoring-chart/grafana-config.yaml && kubectl rollout restart deployment monitoring-grafana -n default"
+
   }
+  depends_on = [ helm_release.monitoring ]
 }

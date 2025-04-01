@@ -1,7 +1,6 @@
 
 
 
-
 data "aws_lb" "eks_alb" {
   # depends_on = [helm_release.alb-controller]  # Ensure ALB exists before fetching
 
