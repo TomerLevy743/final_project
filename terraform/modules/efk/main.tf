@@ -33,7 +33,7 @@ resource "aws_iam_policy" "fluentbit_opensearch_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
       ]
-      Resource = "arn:aws:es:${var.region}:992382545251:log-group:/aws/eks/${var.cluster_name}/fluentbit:*"
+      Resource = "arn:aws:logs:${var.region}:992382545251:log-group:/aws/eks/${var.cluster_name}/fluentbit:*"
     }]
   })
 }
@@ -54,15 +54,15 @@ resource "kubernetes_service_account" "fluentbit_sa" {
 }
 
 
-resource "helm_release" "fluentbit" {
-  name       = "fluentbit"
-  repository = "https://fluent.github.io/helm-charts"
-  chart      = "fluent-bit"
+resource "helm_release" "aws_fluentbit" {
+  name       = "aws-fluent-bit"
+  repository = "https://aws.github.io/eks-charts"
+  chart      = "aws-for-fluent-bit"
   namespace  = "kube-system"
 
   set {
     name  = "serviceAccount.create"
-    value = "false" # Use the existing service account created above
+    value = "false"
   }
 
   set {
@@ -71,26 +71,25 @@ resource "helm_release" "fluentbit" {
   }
 
   set {
-    name  = "backend.type"
-    value = "cloudwatch"
+    name  = "cloudWatchLogs.enabled"
+    value = "true"
   }
 
   set {
-    name  = "backend.cloudwatch.region"
-    value = var.region
-  }
-
-  set {
-    name  = "backend.cloudwatch.logGroupName"
+    name  = "cloudWatchLogs.logGroupName"
     value = "/aws/eks/${var.cluster_name}/fluentbit"
   }
 
   set {
-    name  = "backend.cloudwatch.logStreamPrefix"
+    name  = "cloudWatchLogs.logStreamPrefix"
     value = "eks-logs/"
   }
-}
 
+  set {
+    name  = "cloudWatchLogs.region"
+    value = var.region
+  }
+}
 
 # Elasticsearch Installation
 # resource "helm_release" "elasticsearch" {

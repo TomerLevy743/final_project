@@ -10,7 +10,7 @@ module "eks_node_group" {
   # module.eks.cluster_primary_security_group_id
   vpc_security_group_ids = [var.cluster_nodes_security_group_id]
 
-  instance_types = ["t3.medium"]
+  instance_types = ["t2.medium"]
   desired_size   = 2
   min_size       = 1
   max_size       = 3

@@ -16,8 +16,8 @@ fi
 
 if [[ "$ACTION" == "destroy" ]]; then
     MODULES=("${MODULES[@]}")
-    MODULES=("${MODULES[@]: -1:1}" "${MODULES[@]:0:${#MODULES[@]}-1}")  # Reverse the list
-    MODULES=("${MODULES[@]}" | tac)  # Ensure full reversal
+    MODULES=($(printf "%s
+" "${MODULES[@]}" | tac))  # Reverse the list
 fi
 
 for MODULE in "${MODULES[@]}"; do

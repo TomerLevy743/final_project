@@ -3,7 +3,7 @@ module "eks" {
   version = "19.21.0" # Use the latest stable version
 
   cluster_name    = var.cluster_name
-  cluster_version = "1.29"
+  cluster_version = "1.32"
 
   vpc_id     = var.vpc_id
   subnet_ids = var.subnet_ids
@@ -12,13 +12,22 @@ module "eks" {
 
   cluster_endpoint_public_access  = true
   cluster_endpoint_private_access = true
-  create_cloudwatch_log_group     = true
+  create_cloudwatch_log_group     = false
   tags = {
     Owner = var.owner
   }
 
   cluster_encryption_config = [] # Disable encryption
   depends_on                = [var.vpc_id]
+}
+resource "aws_cloudwatch_log_group" "eks_logs" {
+  name = "/aws/eks/${var.cluster_name}/cluster"
+
+  retention_in_days = 30
+
+  tags = {
+    Owner = var.owner
+  }
 }
 
 
